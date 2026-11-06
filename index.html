@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>La SAGRA — Italian Kitchen &amp; Wine | Ресторан в г. Уральск (ЖК Central)</title>
+  <meta name="description" content="Двухэтажный итальянский ресторан La SAGRA в Уральске (ул. Маншук Маметовой, 44, ЖК Central). Мозаичная дровяная печь, домашняя паста и ризони, тирамису у стола, винная карта. Бронь и доставка: +7 (778) 455-13-42.">
+  <meta name="theme-color" content="#162432">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="restaurant">
+  <meta property="og:title" content="La SAGRA — Italian Kitchen &amp; Wine | Уральск, ЖК Central">
+  <meta property="og:description" content="Кирпичные своды, фрески кипарисового сада, пицца из мозаичной дровяной печи и домашняя паста. Резерв столов: +7 (778) 455-13-42.">
+  <meta property="og:image" content="assets/photos/lemon-chandelier-arch.jpg">
+
+  <!-- Schema.org Restaurant (Данные из карточки 2ГИС 70000001116870134) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Restaurant",
+    "name": "La SAGRA — Italian Kitchen & Wine",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "ул. Маншук Маметовой, 44 (ЖК Central)",
+      "addressLocality": "Уральск",
+      "postalCode": "090002",
+      "addressCountry": "KZ"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 51.219474,
+      "longitude": 51.360436
+    },
+    "telephone": "+77784551342",
+    "servesCuisine": ["Italian", "Pizza", "Pasta", "Seafood"],
+    "priceRange": "₸₸₸",
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+        "opens": "12:00",
+        "closes": "00:00"
+      }
+    ],
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.6",
+      "reviewCount": "91"
+    },
+    "sameAs": [
+      "https://www.instagram.com/lasagra.restaurant/",
+      "https://2gis.kz/uralsk/firm/70000001116870134"
+    ]
+  }
+  </script>
+
+  <!-- Google Fonts: Cormorant Garamond, Plus Jakarta Sans, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            fresco: '#F3EFE6',
+            parchment: '#EAE2D3',
+            ivory: '#FAF7F2',
+            ink: '#181412',
+            bordeaux: '#3A1212',
+            venetian: '#162432',
+            brass: '#C59B5F',
+            terracotta: '#B84A24'
+          },
+          fontFamily: {
+            serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Leaflet Map CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+
+  <!-- Custom Palazzo & Fresco Styles -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="selection:bg-[#3A1212] selection:text-[#F5F0E6]">
+
+  <!-- Превью фото блюда для печатного режима La Carta -->
+  <div id="carta-hover-preview" class="hidden lg:block" aria-hidden="true">
+    <img id="carta-hover-img" src="assets/photos/pasta-frutti-di-mare.jpg" alt="" class="w-full h-full object-cover">
+  </div>
+
+  <!-- ========================================================================
+       ВЕРХНЯЯ ИНФОРМАЦИОННАЯ ПЛАНКА (Реальные данные 2ГИС)
+       ======================================================================== -->
+  <div class="bg-[#240A0A] border-b border-[#F5F0E6]/10 text-[11px] text-[#C8BEB0] py-2 px-4 sm:px-8 relative z-50">
+    <div class="max-w-[1400px] mx-auto flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3 sm:gap-5">
+        <span class="inline-flex items-center gap-2 text-[#F5F0E6] font-mono-tech">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+          <span id="live-open-status">Ежедневно 12:00 – 00:00 (кухня до 23:00)</span>
+        </span>
+        <span class="hidden md:inline text-[#F5F0E6]/20">|</span>
+        <span class="hidden md:inline text-[#C8BEB0]">г. Уральск, ул. Маншук Маметовой, 44 · ЖК Central</span>
+      </div>
+      <div class="flex items-center gap-4 sm:gap-6 ml-auto">
+        <a href="https://go.2gis.com/7ZYyE" target="_blank" rel="noopener noreferrer" class="hover:text-[#C59B5F] transition-colors font-mono-tech">
+          2ГИС ★ 4.6 (91 оценка · 52 фото)
+        </a>
+        <a href="https://www.instagram.com/lasagra.restaurant/" target="_blank" rel="noopener noreferrer" class="hidden sm:inline hover:text-[#C59B5F] transition-colors font-mono-tech">
+          @lasagra.restaurant
+        </a>
+        <a href="tel:+77784551342" class="text-[#F5F0E6] hover:text-[#C59B5F] font-mono-tech font-medium transition-colors">
+          +7 (778) 455-13-42
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       ШАПКА САЙТА (Логотип La SAGRA как на фасаде ЖК Central)
+       ======================================================================== -->
+  <header id="main-header" class="sticky top-0 z-40 transition-all duration-300">
+    <div class="max-w-[1400px] mx-auto px-4 sm:px-8 h-20 flex items-center justify-between gap-4">
+      
+      <!-- Реконструкция логотипа с входных порталов: La SAGRA — ITALIAN KITCHEN & WINE -->
+      <a href="#" class="brand-lockup text-[#F5F0E6] group" aria-label="La SAGRA На главную">
+        <span class="brand-lockup-main">
+          <span class="brand-la">La</span>
+          <span class="brand-sagra group-hover:text-[#C59B5F] transition-colors">SAGRA</span>
+        </span>
+        <span class="brand-sub text-[#C8BEB0]">Italian Kitchen &amp; Wine</span>
+      </a>
+
+      <!-- Десктоп-навигация -->
+      <nav class="hidden lg:flex items-center gap-7" aria-label="Основная навигация">
+        <a href="#zones" class="nav-link">4 Зала (1–2 этаж)</a>
+        <a href="#rituals" class="nav-link">Печь &amp; Ритуалы</a>
+        <a href="#menu" class="nav-link">Меню с фото</a>
+        <a href="#gallery" class="nav-link">Фото 2ГИС</a>
+        <a href="#reviews" class="nav-link">Отзывы</a>
+        <a href="#contacts" class="nav-link">Карта</a>
+      </nav>
+
+      <!-- Кнопки предзаказа и бронирования -->
+      <div class="flex items-center gap-2.5 sm:gap-3">
+        <button type="button" id="header-wishlist-btn" class="inline-flex items-center gap-2 px-3.5 py-2.5 border border-[#F5F0E6]/20 hover:border-[#C59B5F] text-xs text-[#F5F0E6] transition-colors" title="Выбранные блюда для предзаказа или доставки">
+          <span class="hidden sm:inline font-mono-tech uppercase tracking-wider text-[11px] text-[#C8BEB0]">Предзаказ</span>
+          <span id="wishlist-counter" class="px-1.5 py-0.5 bg-[#C59B5F] text-[#14100E] font-mono-tech text-[11px] font-semibold">0</span>
+        </button>
+
+        <button type="button" data-open-booking class="btn-brass !py-2.5 !px-4 sm:!px-5 !text-[11px]">
+          <span>Забронировать стол</span>
+        </button>
+
+        <button type="button" id="mobile-menu-toggle" class="lg:hidden w-10 h-10 border border-[#F5F0E6]/20 flex items-center justify-center text-[#F5F0E6] hover:border-[#C59B5F]" aria-label="Открыть меню">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 7.5h16.5M3.75 12h16.5m-16.5 4.5h16.5"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Мобильное меню -->
+  <div id="mobile-menu-drawer" class="fixed inset-0 z-50 hidden">
+    <div id="mobile-menu-backdrop" class="absolute inset-0 bg-[#0E1822]/85 backdrop-blur-sm"></div>
+    <div class="relative ml-auto w-full max-w-sm h-full bg-[#162432] border-l border-[#F5F0E6]/15 p-6 flex flex-col justify-between text-[#F5F0E6] overflow-y-auto">
+      <div>
+        <div class="flex items-center justify-between pb-5 border-b border-[#F5F0E6]/15">
+          <div class="brand-lockup">
+            <span class="brand-lockup-main">
+              <span class="brand-la">La</span>
+              <span class="brand-sagra">SAGRA</span>
+            </span>
+            <span class="brand-sub text-[#C8BEB0]">Уральск · ЖК Central</span>
+          </div>
+          <button type="button" id="mobile-menu-close" class="w-9 h-9 border border-[#F5F0E6]/20 flex items-center justify-center text-[#C8BEB0] hover:text-white" aria-label="Закрыть">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
+        </div>
+
+        <nav class="mt-6 flex flex-col divide-y divide-[#F5F0E6]/10">
+          <a href="#zones" class="mobile-nav-link py-3.5 font-serif text-2xl hover:text-[#C59B5F] transition-colors">4 Зала (1 и 2 этаж)</a>
+          <a href="#rituals" class="mobile-nav-link py-3.5 font-serif text-2xl hover:text-[#C59B5F] transition-colors">Дровяная печь &amp; Ритуалы</a>
+          <a href="#menu" class="mobile-nav-link py-3.5 font-serif text-2xl hover:text-[#C59B5F] transition-colors">Меню с фото и словарем</a>
+          <a href="#gallery" class="mobile-nav-link py-3.5 font-serif text-2xl hover:text-[#C59B5F] transition-colors">Фотогалерея 2ГИС</a>
+          <a href="#reviews" class="mobile-nav-link py-3.5 font-serif text-2xl hover:text-[#C59B5F] transition-colors">Отзывы гостей</a>
+          <a href="#booking-section" class="mobile-nav-link py-3.5 font-serif text-2xl hover:text-[#C59B5F] transition-colors">Бронь и Доставка</a>
+          <a href="#contacts" class="mobile-nav-link py-3.5 font-serif text-2xl hover:text-[#C59B5F] transition-colors">Карта и Контакты</a>
+        </nav>
+      </div>
+
+      <div class="pt-6 border-t border-[#F5F0E6]/15 space-y-3">
+        <div class="p-4 bg-[#0E1822] border border-[#F5F0E6]/10 text-xs space-y-1">
+          <p class="font-mono-tech uppercase tracking-wider text-[#C59B5F]">Маншук Маметовой, 44</p>
+          <p class="text-[#F5F0E6]">ЖК Central · Ежедневно 12:00 – 00:00</p>
+          <p class="text-[#C8BEB0]">Кухня работает до 23:00</p>
+        </div>
+        <button type="button" data-open-booking class="btn-brass w-full">Забронировать стол</button>
+        <a href="https://wa.me/77784551342" target="_blank" rel="noopener noreferrer" class="btn-outline-light w-full text-center">Написать в WhatsApp</a>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <!-- ======================================================================
+         1. HERO: PALAZZO & FRESCO (Венецианский синий + Арочный триптих 2ГИС)
+         ====================================================================== -->
+    <section class="relative theme-venetian overflow-hidden border-b border-[#F5F0E6]/15">
+      <!-- Фирменный полосатый акцент плитки у печи -->
+      <div class="forno-tile-accent h-1.5 w-full"></div>
+
+      <div class="max-w-[1400px] mx-auto px-4 sm:px-8 pt-10 pb-14 lg:py-20">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+          
+          <!-- Левая колонка: Реальная история и выбор посадки -->
+          <div class="lg:col-span-7 space-y-7">
+            <div class="inline-flex flex-wrap items-center gap-3">
+              <span class="section-index text-[#C59B5F]">( 01 — Двухэтажный итальянский ресторан в Уральске )</span>
+              <span class="px-2.5 py-0.5 bg-[#3A1212] border border-[#C59B5F]/40 text-[11px] font-mono-tech text-[#F5F0E6]">ЖК Central · М. Маметовой, 44</span>
+            </div>
+
+            <h1 class="editorial-display text-[#F5F0E6]">
+              Кирпичные своды, мозаичная печь и вкус праздника
+              <span class="italic font-normal text-[#C59B5F] block mt-1">La Sagra — Italian Kitchen &amp; Wine</span>
+            </h1>
+
+            <p class="text-base sm:text-lg text-[#C8BEB0] max-w-2xl leading-relaxed font-light">
+              В Италии словом <em class="text-[#F5F0E6] not-italic font-medium">Sagra</em> называют локальный гастрономический праздник урожая, вина и ремесленной еды. В нашем двухэтажном пространстве вас ждут сводчатые арки из старого кирпича, фрески кипарисового сада, живые оливы, неаполитанская пицца из мозаичной дровяной печи и подача фирменного Тирамису прямо у вашего стола.
+            </p>
+
+            <!-- Кнопки основного действия -->
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 pt-1">
+              <button type="button" data-open-booking class="btn-brass">
+                <span>Забронировать стол</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                </svg>
+              </button>
+              <a href="#menu" class="btn-outline-light">
+                <span>Смотреть меню с фото блюд</span>
+              </a>
+              <a href="#zones" class="btn-outline-light !border-[#F5F0E6]/15">
+                <span>Обзор 1 и 2 этажа</span>
+              </a>
+            </div>
+
+            <!-- Быстрый выбор реальной зоны и вечернего времени -->
+            <div class="pt-6 border-t border-[#F5F0E6]/15 grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div>
+                <p class="font-mono-tech text-[11px] uppercase tracking-widest text-[#C59B5F] mb-2.5">Быстрый выбор зала для брони:</p>
+                <div class="flex flex-wrap gap-1.5">
+                  <button type="button" data-quick-zone="1 этаж — Зал под кирпичными сводами" class="px-2.5 py-1.5 text-xs bg-[#0E1822] hover:bg-[#3A1212] border border-[#F5F0E6]/15 hover:border-[#C59B5F] text-[#F5F0E6] transition-colors">1 этаж · Под сводами</button>
+                  <button type="button" data-quick-zone="1 этаж — Каминный салон у лестницы" class="px-2.5 py-1.5 text-xs bg-[#0E1822] hover:bg-[#3A1212] border border-[#F5F0E6]/15 hover:border-[#C59B5F] text-[#F5F0E6] transition-colors">У резного камина</button>
+                  <button type="button" data-quick-zone="1 этаж — Зона у мозаичной печи Forno" class="px-2.5 py-1.5 text-xs bg-[#0E1822] hover:bg-[#3A1212] border border-[#F5F0E6]/15 hover:border-[#C59B5F] text-[#F5F0E6] transition-colors">У дровяной печи</button>
+                  <button type="button" data-quick-zone="2 этаж — Верхняя галерея и банкетный зал" class="px-2.5 py-1.5 text-xs bg-[#0E1822] hover:bg-[#3A1212] border border-[#F5F0E6]/15 hover:border-[#C59B5F] text-[#F5F0E6] transition-colors">2 этаж · Галерея</button>
+                </div>
+              </div>
+
+              <div>
+                <p class="font-mono-tech text-[11px] uppercase tracking-widest text-[#C59B5F] mb-2.5">Вечерние слоты (кухня до 23:00):</p>
+                <div class="flex flex-wrap gap-1.5">
+                  <button type="button" data-quick-time="18:30" class="px-3 py-1.5 font-mono-tech text-xs bg-[#0E1822] hover:bg-[#C59B5F] hover:text-[#14100E] border border-[#F5F0E6]/15 text-[#F5F0E6] transition-colors">18:30</button>
+                  <button type="button" data-quick-time="19:30" class="px-3 py-1.5 font-mono-tech text-xs bg-[#0E1822] hover:bg-[#C59B5F] hover:text-[#14100E] border border-[#F5F0E6]/15 text-[#F5F0E6] transition-colors">19:30</button>
+                  <button type="button" data-quick-time="20:30" class="px-3 py-1.5 font-mono-tech text-xs bg-[#0E1822] hover:bg-[#C59B5F] hover:text-[#14100E] border border-[#F5F0E6]/15 text-[#F5F0E6] transition-colors">20:30</button>
+                  <button type="button" data-quick-time="21:30" class="px-3 py-1.5 font-mono-tech text-xs bg-[#0E1822] hover:bg-[#C59B5F] hover:text-[#14100E] border border-[#F5F0E6]/15 text-[#F5F0E6] transition-colors">21:30</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Правая колонка: Арочный триптих из реальных фотографий La Sagra (2ГИС) -->
+          <div class="lg:col-span-5 relative">
+            <div class="relative mx-auto max-w-md lg:max-w-none">
+              <!-- Главная римская арка: Люстра с лимонами, кирпичный свод и камин -->
+              <div class="arch-frame aspect-[3/4] bg-[#0E1822] shadow-2xl">
+                <img src="assets/photos/lemon-chandelier-arch.jpg" alt="Интерьер La Sagra: кирпичная арка, люстра с лимонами Амальфи и антикварное зеркало над камином" class="w-full h-full object-cover">
+                <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#0E1822]/90 via-[#0E1822]/30 to-transparent p-5 pt-12">
+                  <p class="font-mono-tech text-[10px] uppercase tracking-widest text-[#C59B5F]">Реальное фото зала · 1 этаж</p>
+                  <p class="font-serif text-lg text-[#F5F0E6]">Люстра из ветвей с лимонами Амальфи, кирпичный свод и камин</p>
+                </div>
+              </div>
+
+              <!-- Карточка слева внизу: Мозаичная дровяная печь Forno a Legna -->
+              <div class="hidden sm:block absolute -bottom-6 -left-8 w-52 bg-[#F3EFE6] text-[#181412] p-2.5 border border-[#181412]/20 shadow-xl z-10">
+                <div class="aspect-[4/3] overflow-hidden mb-2">
+                  <img src="assets/photos/forno-mosaic.jpg" alt="Мозаичная дровяная печь La Sagra" class="w-full h-full object-cover">
+                </div>
+                <p class="font-mono-tech text-[9px] uppercase tracking-wider text-[#3A1212] font-semibold">Forno a Legna · 430 °C</p>
+                <p class="font-serif text-sm font-semibold leading-tight text-[#181412]">Терракотовая мозаичная печь в открытом зале</p>
+              </div>
+
+              <!-- Карточка справа вверху: Подача пасты в медной сковороде -->
+              <div class="hidden sm:block absolute -top-5 -right-6 w-48 bg-[#3A1212] text-[#F5F0E6] p-2.5 border border-[#C59B5F]/50 shadow-xl z-10">
+                <div class="aspect-[4/3] overflow-hidden mb-2">
+                  <img src="assets/photos/pasta-frutti-di-mare.jpg" alt="Паста казаречче с морепродуктами в медной сковороде" class="w-full h-full object-cover">
+                </div>
+                <p class="font-mono-tech text-[9px] uppercase tracking-wider text-[#C59B5F]">Cucina Autentica</p>
+                <p class="font-serif text-sm leading-tight">Казаречче с лангустином в медной посуде</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         2. ИНТЕРАКТИВНЫЙ ГИД ПО 4 ЗАЛАМ (1 и 2 ЭТАЖ) — Фресковый пергамент
+         ====================================================================== -->
+    <section id="zones" class="py-16 lg:py-24 theme-fresco border-b border-[#181412]/15">
+      <div class="max-w-[1400px] mx-auto px-4 sm:px-8">
+        
+        <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-10 border-b border-[#181412]/15 reveal">
+          <div>
+            <span class="section-index text-[#3A1212] mb-2">( 02 — Архитектура и выбор посадки )</span>
+            <h2 class="editorial-h2 text-[#181412]">
+              Четыре пространства <span class="italic font-normal text-[#3A1212]">двух этажей</span>
+            </h2>
+          </div>
+          <p class="text-sm sm:text-base text-[#52483E] max-w-xl">
+            Выберите зал, который подходит вашему вечеру — от оживленного первого этажа с брусчаткой и дровяной печью до уединенной галереи второго этажа, куда ведет кованая винтовая лестница.
+          </p>
+        </div>
+
+        <!-- Кнопки переключения 4 реальных зон -->
+        <div id="zone-tabs-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 my-8 reveal">
+          <!-- Рендерится из ARCHITECTURAL_ZONES в app.js -->
+        </div>
+
+        <!-- Витрина выбранной зоны с 3 реальными фото и кнопкой бронирования именно этого зала -->
+        <div id="zone-showcase" class="bg-[#FAF7F2] border border-[#181412]/15 p-5 sm:p-8 lg:p-10 reveal">
+          <!-- Динамически обновляется из app.js -->
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         3. ТРИ РИТУАЛА КУХНИ LA SAGRA (Бордовый контрастный блок)
+         ====================================================================== -->
+    <section id="rituals" class="py-16 lg:py-24 theme-bordeaux relative border-b border-[#F5F0E6]/15">
+      <div class="forno-tile-accent h-1.5 w-full absolute top-0 left-0"></div>
+
+      <div class="max-w-[1400px] mx-auto px-4 sm:px-8">
+        <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-12 border-b border-[#F5F0E6]/15 reveal">
+          <div>
+            <span class="section-index text-[#C59B5F] mb-2">( 03 — Живое ремесло и подача у стола )</span>
+            <h2 class="editorial-h2 text-[#F5F0E6]">
+              Три гастрономических ритуала <span class="italic font-normal text-[#C59B5F]">La Sagra</span>
+            </h2>
+          </div>
+          <p class="text-sm sm:text-base text-[#C8BEB0] max-w-lg font-light">
+            Каждая деталь в ресторане — от итальянской муки у мозаичной печи до расписного фарфора и вышитой монограммы <em class="text-[#F5F0E6]">La</em> на льняных салфетках — запечатлена на реальных снимках наших гостей.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 pt-12">
+          
+          <!-- Ритуал 1: Мозаичная печь и мука Le 5 Stagioni -->
+          <article class="bg-[#240A0A] border border-[#F5F0E6]/15 flex flex-col justify-between reveal">
+            <div>
+              <div class="aspect-[4/3] overflow-hidden relative border-b border-[#F5F0E6]/15">
+                <img src="assets/photos/forno-mosaic.jpg" alt="Терракотовая мозаичная дровяная печь в La Sagra" class="w-full h-full object-cover">
+                <span class="absolute top-3 left-3 px-2.5 py-1 bg-[#14100E]/85 border border-[#C59B5F]/40 font-mono-tech text-[10px] uppercase tracking-wider text-[#C59B5F]">01 · Forno a Legna</span>
+              </div>
+              <div class="p-6 sm:p-7">
+                <h3 class="font-serif text-2xl sm:text-3xl text-[#F5F0E6] mb-3">Мозаичная печь и мука Le 5 Stagioni</h3>
+                <p class="text-sm text-[#C8BEB0] leading-relaxed font-light">
+                  В зале первого этажа сложена купольная печь в терракотовой мозаике. Мы заводим тесто на итальянской муке <strong class="text-[#F5F0E6] font-medium">Le 5 Stagioni Napoletana Rossa</strong> длительной ферментации, чтобы бортик пиццы и горячей фокаччи оставался воздушным и хрустящим.
+                </p>
+              </div>
+            </div>
+            <div class="px-6 sm:px-7 py-4 border-t border-[#F5F0E6]/10 flex items-center justify-between text-xs font-mono-tech text-[#C59B5F]">
+              <span>Температура свода: 430 °C</span>
+              <span>Выпечка: 90 сек</span>
+            </div>
+          </article>
+
+          <!-- Ритуал 2: Медная посуда и расписная керамика -->
+          <article class="bg-[#240A0A] border border-[#F5F0E6]/15 flex flex-col justify-between reveal">
+            <div>
+              <div class="aspect-[4/3] overflow-hidden relative border-b border-[#F5F0E6]/15">
+                <img src="assets/photos/risoni-unagi.jpg" alt="Сливочное ризони с угрем унаги на расписной итальянской керамике" class="w-full h-full object-cover">
+                <span class="absolute top-3 left-3 px-2.5 py-1 bg-[#14100E]/85 border border-[#C59B5F]/40 font-mono-tech text-[10px] uppercase tracking-wider text-[#C59B5F]">02 · Pasta &amp; Ceramica</span>
+              </div>
+              <div class="p-6 sm:p-7">
+                <h3 class="font-serif text-2xl sm:text-3xl text-[#F5F0E6] mb-3">Медные сковороды, сырная голова и керамика</h3>
+                <p class="text-sm text-[#C8BEB0] leading-relaxed font-light">
+                  Казаречче с лангустином и вонголе подаются прямо в овальной медной сковороде, тальолини с трюфелем замешиваются в голове сыра <strong class="text-[#F5F0E6] font-medium">Parmigiano Reggiano</strong>, а сливочное ризони сервируется на глубоких тарелках с ручной кобальтовой росписью.
+                </p>
+              </div>
+            </div>
+            <div class="px-6 sm:px-7 py-4 border-t border-[#F5F0E6]/10 flex items-center justify-between text-xs font-mono-tech text-[#C59B5F]">
+              <span>Твердые сорта пшеницы</span>
+              <span>Подача из-под ножа</span>
+            </div>
+          </article>
+
+          <!-- Ритуал 3: Тирамису у стола и торт Чиприани -->
+          <article class="bg-[#240A0A] border border-[#F5F0E6]/15 flex flex-col justify-between reveal">
+            <div>
+              <div class="aspect-[4/3] overflow-hidden relative border-b border-[#F5F0E6]/15">
+                <img src="assets/photos/tiramisu-tableside.jpg" alt="Подача фирменного Тирамису у стола гостя в La Sagra" class="w-full h-full object-cover">
+                <span class="absolute top-3 left-3 px-2.5 py-1 bg-[#14100E]/85 border border-[#C59B5F]/40 font-mono-tech text-[10px] uppercase tracking-wider text-[#C59B5F]">03 · Dolce al Tavolo</span>
+              </div>
+              <div class="p-6 sm:p-7">
+                <h3 class="font-serif text-2xl sm:text-3xl text-[#F5F0E6] mb-3">Тирамису у стола и комплимент именинникам</h3>
+                <p class="text-sm text-[#C8BEB0] leading-relaxed font-light">
+                  Фирменный Тирамису на маскарпоне выкладывается ложкой из большой формы прямо у вашего стола. А гостям, отмечающим день рождения в La Sagra, мы дарим праздничный венецианский <strong class="text-[#F5F0E6] font-medium">торт Чиприани</strong> и подаем ледяной домашний Лимончелло.
+                </p>
+              </div>
+            </div>
+            <div class="px-6 sm:px-7 py-4 border-t border-[#F5F0E6]/10 flex items-center justify-between text-xs font-mono-tech text-[#C59B5F]">
+              <span>Подача у стола гостя</span>
+              <span>Торт в день рождения</span>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         4. ИЛЛЮСТРИРОВАННОЕ МЕНЮ «LA CARTA ILLUSTRATA» (Светлый фресковый пергамент)
+         ====================================================================== -->
+    <section id="menu" class="py-16 lg:py-24 theme-fresco border-b border-[#181412]/15">
+      <div class="max-w-[1400px] mx-auto px-4 sm:px-8">
+        
+        <!-- Заголовок меню + переключатель режимов -->
+        <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-8 border-b border-[#181412]/15 reveal">
+          <div>
+            <span class="section-index text-[#3A1212] mb-2">( 04 — Иллюстрированный гастрономический каталог )</span>
+            <h2 class="editorial-h2 text-[#181412]">
+              Меню <span class="italic font-normal text-[#3A1212]">La Carta Illustrata</span>
+            </h2>
+            <p class="text-sm sm:text-base text-[#52483E] mt-2 max-w-2xl">
+              Мы снабдили каждую позицию фотографией реальной подачи и простым объяснением итальянских гастрономических терминов (<em class="text-[#181412]">ризони, казаречче, страчателла, татаки, Чиприани</em>), чтобы вы легко выбрали блюдо по вкусу.
+            </p>
+          </div>
+
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+            <!-- Переключатель вида: Фото-карточки / Печатный лист -->
+            <div class="inline-flex border border-[#181412]/20 bg-[#FAF7F2] p-0.5">
+              <button type="button" id="view-grid-btn" class="px-3.5 py-2 text-xs font-mono-tech uppercase tracking-wider bg-[#3A1212] text-[#F5F0E6] transition-colors">
+                Фото-карточки
+              </button>
+              <button type="button" id="view-list-btn" class="px-3.5 py-2 text-xs font-mono-tech uppercase tracking-wider text-[#52483E] hover:text-[#181412] transition-colors">
+                Печатный лист
+              </button>
+            </div>
+
+            <!-- Поиск по меню -->
+            <div class="relative min-w-[230px]">
+              <input type="search" id="menu-search-input" placeholder="Поиск: ризони, креветки, тирамису..." class="input-fresco !py-2 !pl-9 !pr-4 !text-xs">
+              <svg class="w-4 h-4 text-[#7D7165] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Плашка о предзаказе ко времени и доставке -->
+        <div class="my-6 p-4 bg-[#EAE2D3] border-l-4 border-[#3A1212] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs sm:text-sm text-[#181412] reveal">
+          <div>
+            <strong class="font-semibold text-[#3A1212]">Предзаказ к вашему приходу и Доставка:</strong>
+            отметьте блюда кнопкой <span class="font-mono-tech px-1.5 py-0.5 bg-[#FAF7F2] border border-[#181412]/15 text-[11px]">+ В предзаказ</span>, чтобы горячую пасту и пиццу из печи подали точно к назначенному времени без ожидания или доставили по Уральску.
+          </div>
+          <a href="#booking-section" class="font-mono-tech text-xs uppercase tracking-wider text-[#3A1212] font-semibold underline underline-offset-4 whitespace-nowrap">
+            Перейти к оформлению →
+          </a>
+        </div>
+
+        <!-- Вкладки категорий меню -->
+        <div id="category-container" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-4 mb-6 reveal" role="tablist">
+          <!-- Рендерится в app.js -->
+        </div>
+
+        <!-- Сетка блюд (или печатный лист La Carta) -->
+        <div id="menu-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Рендерится в app.js -->
+        </div>
+
+        <!-- Пустое состояние поиска -->
+        <div id="empty-menu-state" class="hidden py-14 text-center bg-[#FAF7F2] border border-[#181412]/15">
+          <p class="font-serif text-2xl text-[#181412] mb-2">По вашему запросу ничего не найдено</p>
+          <p class="text-sm text-[#52483E] mb-5">Попробуйте сбросить фильтр или ввести другое название ингредиента.</p>
+          <button type="button" id="reset-menu-filter" class="btn-outline-dark">Показать все меню</button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         5. АРХИВ РЕАЛЬНЫХ ФОТОГРАФИЙ 2ГИС (Венецианский синий блок)
+         ====================================================================== -->
+    <section id="gallery" class="py-16 lg:py-24 theme-venetian border-b border-[#F5F0E6]/15">
+      <div class="max-w-[1400px] mx-auto px-4 sm:px-8">
+        
+        <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-8 border-b border-[#F5F0E6]/15 reveal">
+          <div>
+            <span class="section-index text-[#C59B5F] mb-2">( 05 — Подлинные кадры из карточки ресторана в 2ГИС )</span>
+            <h2 class="editorial-h2 text-[#F5F0E6]">
+              Архитектура, свет и <span class="italic font-normal text-[#C59B5F]">детали залов</span>
+            </h2>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2" id="gallery-filters">
+            <button type="button" data-gallery-cat="all" class="gallery-filter-btn active">Все кадры (8)</button>
+            <button type="button" data-gallery-cat="architecture" class="gallery-filter-btn">Своды и залы</button>
+            <button type="button" data-gallery-cat="forno" class="gallery-filter-btn">Мозаичная печь</button>
+            <button type="button" data-gallery-cat="service" class="gallery-filter-btn">Подача и банкеты</button>
+            <button type="button" data-gallery-cat="facade" class="gallery-filter-btn">Фасад ЖК Central</button>
+          </div>
+        </div>
+
+        <!-- Сетка реальных фотографий (с открытием в лайтбоксе) -->
+        <div id="gallery-grid" class="grid grid-cols-1 md:grid-cols-12 gap-5 mt-10">
+          <!-- Рендерится из GALLERY_ITEMS в app.js -->
+        </div>
+
+        <div class="mt-8 pt-6 border-t border-[#F5F0E6]/15 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs text-[#C8BEB0]">
+          <p>Все фотографии на сайте — подлинные снимки интерьера, печи и подачи блюд ресторана La SAGRA в г. Уральск.</p>
+          <a href="https://go.2gis.com/7ZYyE" target="_blank" rel="noopener noreferrer" class="btn-outline-light !py-2.5 !px-4 !text-[11px]">
+            <span>Открыть все 52 фото в 2ГИС ↗</span>
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         6. РЕАЛЬНЫЕ ОТЗЫВЫ ГОСТЕЙ 2ГИС (Пергаментный блок)
+         ====================================================================== -->
+    <section id="reviews" class="py-16 lg:py-24 theme-parchment border-b border-[#181412]/15">
+      <div class="max-w-[1400px] mx-auto px-4 sm:px-8">
+        
+        <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-10 border-b border-[#181412]/15 reveal">
+          <div>
+            <span class="section-index text-[#3A1212] mb-2">( 06 — Прямая речь гостей из 2ГИС )</span>
+            <h2 class="editorial-h2 text-[#181412]">
+              Впечатления гостей <span class="italic font-normal text-[#3A1212]">La Sagra</span>
+            </h2>
+          </div>
+
+          <div class="flex items-center gap-5 bg-[#FAF7F2] px-5 py-3.5 border border-[#181412]/15">
+            <div>
+              <div class="font-serif text-3xl font-semibold text-[#3A1212] tabular-nums">4.6 ★</div>
+              <div class="font-mono-tech text-[10px] uppercase tracking-wider text-[#52483E]">91 оценка · 42 отзыва</div>
+            </div>
+            <div class="h-8 w-px bg-[#181412]/15"></div>
+            <a href="https://2gis.kz/uralsk/firm/70000001116870134/tab/reviews" target="_blank" rel="noopener noreferrer" class="font-mono-tech text-xs uppercase tracking-wider text-[#181412] hover:text-[#3A1212] underline underline-offset-4">
+              Читать в 2ГИС ↗
+            </a>
+          </div>
+        </div>
+
+        <div id="reviews-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
+          <!-- Рендерится из REVIEWS_DATA в app.js -->
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         7. МОДУЛЬ БРОНИРОВАНИЯ СТОЛА И ПРЕДЗАКАЗА / ДОСТАВКИ
+         ====================================================================== -->
+    <section id="booking-section" class="py-16 lg:py-24 theme-fresco border-b border-[#181412]/15">
+      <div class="max-w-[1400px] mx-auto px-4 sm:px-8">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
+          
+          <!-- Левая колонка: Правила гостеприимства и праздничный сервис -->
+          <div class="lg:col-span-5 space-y-6 reveal">
+            <span class="section-index text-[#3A1212]">( 07 — Резерв стола, предзаказ ко времени и доставка )</span>
+            <h2 class="editorial-h2 text-[#181412]">
+              Спланируйте ужин <span class="italic font-normal text-[#3A1212]">без ожидания</span>
+            </h2>
+            <p class="text-sm sm:text-base text-[#52483E] leading-relaxed">
+              Выберите предпочтительный зал на первом или втором этаже и укажите желаемые блюда заранее — мы передадим заявку администратору в WhatsApp <strong class="text-[#181412] font-mono-tech">+7 (778) 455-13-42</strong> и подготовим стол точно к вашему приходу.
+            </p>
+
+            <!-- Карточка с фотографией банкетной сервировки -->
+            <div class="bg-[#FAF7F2] border border-[#181412]/15 overflow-hidden">
+              <div class="aspect-[16/10] overflow-hidden border-b border-[#181412]/15">
+                <img src="assets/photos/banquet-table.jpg" alt="Праздничная сервировка стола в La Sagra с бордовым текстилем и именными карточками" class="w-full h-full object-cover">
+              </div>
+              <div class="p-5 space-y-3">
+                <div class="flex items-center justify-between">
+                  <span class="font-mono-tech text-[10px] uppercase tracking-wider text-[#3A1212] font-semibold">Дни рождения и камерные банкеты</span>
+                  <span class="font-mono-tech text-[10px] text-[#52483E]">1 и 2 этаж</span>
+                </div>
+                <p class="font-serif text-xl text-[#181412]">Праздничная сервировка и торт Чиприани в подарок</p>
+                <p class="text-xs text-[#52483E] leading-relaxed">
+                  Для дней рождения и семейных событий мы оформляем стол бордовым раннером, свечами, именными карточками гостей и дарим фирменный торт Чиприани от команды La Sagra.
+                </p>
+              </div>
+            </div>
+
+            <!-- Важные ориентиры для гостей -->
+            <div class="p-5 bg-[#EAE2D3] border border-[#181412]/15 space-y-2.5 text-xs text-[#181412]">
+              <p class="font-mono-tech uppercase tracking-wider text-[#3A1212] font-semibold">Важная информация для гостей:</p>
+              <ul class="space-y-1.5 text-[#52483E]">
+                <li>• Ресторан открыт ежедневно с <strong class="text-[#181412]">12:00 до 00:00</strong>, заказы по кухне принимаются до <strong class="text-[#181412]">23:00</strong>.</li>
+                <li>• Доступен заказ блюд навынос и доставка по г. Уральск (пицца из печи, домашняя паста, ризони, салаты).</li>
+                <li>• Оплата: банковской картой, Kaspi QR, наличными или безналичным расчетом для компаний.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Правая колонка: Форма бронирования / предзаказа / доставки -->
+          <div class="lg:col-span-7 bg-[#FAF7F2] border border-[#181412]/20 p-6 sm:p-8 lg:p-10 shadow-sm reveal">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 mb-6 border-b border-[#181412]/15">
+              <div>
+                <h3 class="font-serif text-2xl sm:text-3xl text-[#181412]">Лист резерва и заказа</h3>
+                <p class="text-xs text-[#52483E] mt-0.5">Мгновенная генерация карточки гостя и отправка администратору в WhatsApp</p>
+              </div>
+              <span class="font-mono-tech text-xs px-3 py-1.5 bg-[#3A1212] text-[#F5F0E6]">+7 (778) 455-13-42</span>
+            </div>
+
+            <form id="inline-booking-form" class="space-y-5">
+              <!-- Тип обращения: Резерв стола / Навынос и Доставка / День рождения -->
+              <div>
+                <label class="block font-mono-tech text-[11px] uppercase tracking-wider text-[#52483E] mb-2">Формат вашего визита или заказа</label>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                  <label class="cursor-pointer">
+                    <input type="radio" name="visitType" value="Резерв стола в ресторане" checked class="peer sr-only">
+                    <span class="block text-center py-2.5 px-3 text-xs font-medium border border-[#181412]/20 bg-white peer-checked:bg-[#3A1212] peer-checked:text-[#F5F0E6] peer-checked:border-[#3A1212] transition-colors">
+                      Резерв стола
+                    </span>
+                  </label>
+                  <label class="cursor-pointer">
+                    <input type="radio" name="visitType" value="День рождения / Праздничный стол" class="peer sr-only">
+                    <span class="block text-center py-2.5 px-3 text-xs font-medium border border-[#181412]/20 bg-white peer-checked:bg-[#3A1212] peer-checked:text-[#F5F0E6] peer-checked:border-[#3A1212] transition-colors">
+                      День рождения / Банкет
+                    </span>
+                  </label>
+                  <label class="cursor-pointer">
+                    <input type="radio" name="visitType" value="Заказ навынос / Доставка" class="peer sr-only">
+                    <span class="block text-center py-2.5 px-3 text-xs font-medium border border-[#181412]/20 bg-white peer-checked:bg-[#3A1212] peer-checked:text-[#F5F0E6] peer-checked:border-[#3A1212] transition-colors">
+                      Навынос / Доставка
+                    </span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label for="booking-name" class="block font-mono-tech text-[11px] uppercase tracking-wider text-[#52483E] mb-1.5">Ваше имя *</label>
+                  <input type="text" id="booking-name" name="name" required placeholder="Например, Азамат" class="input-fresco">
+                </div>
+                <div>
+                  <label for="booking-phone" class="block font-mono-tech text-[11px] uppercase tracking-wider text-[#52483E] mb-1.5">Телефон / WhatsApp *</label>
+                  <input type="tel" id="booking-phone" name="phone" required placeholder="+7 (778) 000-00-00" class="input-fresco font-mono-tech">
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div>
+                  <label for="booking-date" class="block font-mono-tech text-[11px] uppercase tracking-wider text-[#52483E] mb-1.5">Дата *</label>
+                  <input type="date" id="booking-date" name="date" required class="input-fresco font-mono-tech">
+                </div>
+                <div>
+                  <label for="booking-time" class="block font-mono-tech text-[11px] uppercase tracking-wider text-[#52483E] mb-1.5">Время (до 23:00) *</label>
+                  <select id="booking-time" name="time" required class="input-fresco font-mono-tech">
+                    <option value="12:30">12:30 (Обед)</option>
+                    <option value="13:30">13:30 (Обед)</option>
+                    <option value="15:00">15:00 (День)</option>
+                    <option value="17:00">17:00 (Ранний вечер)</option>
+                    <option value="18:30">18:30 (Ужин)</option>
+                    <option value="19:30" selected>19:30 (Ужин)</option>
+                    <option value="20:30">20:30 (Ужин)</option>
+                    <option value="21:30">21:30 (Поздний ужин)</option>
+                    <option value="22:15">22:15 (Кухня до 23:00)</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="booking-guests" class="block font-mono-tech text-[11px] uppercase tracking-wider text-[#52483E] mb-1.5">Персон *</label>
+                  <select id="booking-guests" name="guests" required class="input-fresco font-mono-tech">
+                    <option value="2 персоны" selected>2 персоны</option>
+                    <option value="3 персоны">3 персоны</option>
+                    <option value="4 персоны">4 персоны</option>
+                    <option value="5–6 персон">5–6 персон</option>
+                    <option value="7–10 персон (Компания)">7–10 персон</option>
+                    <option value="12+ персон (Банкет 2 этаж)">12+ персон (Банкет)</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Выбор конкретного зала из 4 реальных зон -->
+              <div>
+                <label for="booking-zone" class="block font-mono-tech text-[11px] uppercase tracking-wider text-[#52483E] mb-1.5">Предпочтительный зал (1 или 2 этаж)</label>
+                <select id="booking-zone" name="zone" class="input-fresco">
+                  <option value="1 этаж — Зал под кирпичными сводами">1 этаж — Зал под кирпичными сводами (люстра с лимонами)</option>
+                  <option value="1 этаж — Каминный салон у лестницы">1 этаж — Каминный салон у резного портала и зеркала</option>
+                  <option value="1 этаж — Зона у мозаичной печи Forno">1 этаж — Зона у дровяной мозаичной печи Forno a Legna</option>
+                  <option value="2 этаж — Верхняя галерея и банкетный зал">2 этаж — Верхняя галерея (уединенная посадка / банкет)</option>
+                </select>
+              </div>
+
+              <!-- Выбранные блюда из меню для предзаказа ко времени -->
+              <div id="inline-selected-dishes-box" class="p-4 bg-[#F3EFE6] border border-[#181412]/15">
+                <div class="flex items-center justify-between mb-2">
+                  <span class="font-mono-tech text-[11px] uppercase tracking-wider text-[#3A1212] font-semibold">Предзаказ блюд из меню ко времени:</span>
+                  <a href="#menu" class="font-mono-tech text-[11px] text-[#181412] underline">+ Добавить из меню</a>
+                </div>
+                <div id="inline-selected-dishes-list" class="text-xs text-[#52483E]">
+                  Блюда еще не выбраны. Вы можете отметить позиции в меню выше, чтобы мы приготовили их к вашему приходу.
+                </div>
+              </div>
+
+              <div>
+                <label for="booking-notes" class="block font-mono-tech text-[11px] uppercase tracking-wider text-[#52483E] mb-1.5">Пожелания к столу, повод или адрес доставки</label>
+                <textarea id="booking-notes" name="notes" rows="2" placeholder="Например: отмечаем день рождения (просим подготовить комплимент), нужен детский стульчик или столик у окна..." class="input-fresco"></textarea>
+              </div>
+
+              <div class="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <button type="submit" class="btn-bordeaux flex-1">
+                  <span>Подтвердить и отправить в WhatsApp</span>
+                </button>
+                <a href="tel:+77784551342" class="btn-outline-dark text-center font-mono-tech">
+                  Позвонить: +7 778 455-13-42
+                </a>
+              </div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         8. КОНТАКТЫ, ФАСАД ЖК CENTRAL И ИНТЕРАКТИВНАЯ КАРТА (Венецианский синий)
+         ====================================================================== -->
+    <section id="contacts" class="py-16 lg:py-24 theme-venetian border-b border-[#F5F0E6]/15">
+      <div class="max-w-[1400px] mx-auto px-4 sm:px-8">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-stretch">
+          
+          <!-- Левая колонка: Адрес, реальное фото фасада и реквизиты связи -->
+          <div class="lg:col-span-5 flex flex-col justify-between bg-[#0E1822] border border-[#F5F0E6]/15 p-6 sm:p-8 reveal">
+            <div class="space-y-6">
+              <div>
+                <span class="section-index text-[#C59B5F] mb-2">( 08 — Локация и маршрут )</span>
+                <h2 class="font-serif text-3xl sm:text-4xl text-[#F5F0E6]">Уральск, ЖК Central</h2>
+                <p class="text-sm text-[#C8BEB0] mt-1">ул. Маншук Маметовой, 44 · Остановка «пл. М. Маметовой» (370 м)</p>
+              </div>
+
+              <!-- Реальное фото ночного фасада La SAGRA из 2ГИС -->
+              <div class="aspect-[16/10] overflow-hidden border border-[#F5F0E6]/15 relative">
+                <img src="assets/photos/facade-portals.jpg" alt="Фасад ресторана La SAGRA в ЖК Central, ул. Маншук Маметовой, 44" class="w-full h-full object-cover">
+                <span class="absolute bottom-2.5 left-2.5 px-2.5 py-1 bg-[#0E1822]/90 text-[10px] font-mono-tech text-[#C59B5F]">
+                  Входная группа с тремя бордовыми порталами
+                </span>
+              </div>
+
+              <div class="space-y-3 pt-2 text-sm border-t border-[#F5F0E6]/15">
+                <div class="flex justify-between gap-4 py-1.5 border-b border-[#F5F0E6]/10">
+                  <span class="text-[#C8BEB0]">Телефон / WhatsApp:</span>
+                  <a href="tel:+77784551342" class="font-mono-tech text-[#F5F0E6] hover:text-[#C59B5F]">+7 (778) 455-13-42</a>
+                </div>
+                <div class="flex justify-between gap-4 py-1.5 border-b border-[#F5F0E6]/10">
+                  <span class="text-[#C8BEB0]">Режим работы:</span>
+                  <span class="font-mono-tech text-[#F5F0E6]">Ежедневно 12:00 – 00:00</span>
+                </div>
+                <div class="flex justify-between gap-4 py-1.5 border-b border-[#F5F0E6]/10">
+                  <span class="text-[#C8BEB0]">Время работы кухни:</span>
+                  <span class="font-mono-tech text-[#C59B5F]">До 23:00</span>
+                </div>
+                <div class="flex justify-between gap-4 py-1.5">
+                  <span class="text-[#C8BEB0]">Оплата и сервис:</span>
+                  <span class="text-right text-[#F5F0E6] text-xs">Карта · Kaspi QR · Наличные · Wi-Fi</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="pt-6 mt-6 border-t border-[#F5F0E6]/15 grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <a href="https://2gis.kz/uralsk/firm/70000001116870134" target="_blank" rel="noopener noreferrer" class="btn-brass !py-3 !text-[11px] text-center">
+                Открыть в 2ГИС ↗
+              </a>
+              <a href="https://www.instagram.com/lasagra.restaurant/" target="_blank" rel="noopener noreferrer" class="btn-outline-light !py-3 !text-[11px] text-center">
+                Instagram ресторана ↗
+              </a>
+            </div>
+          </div>
+
+          <!-- Правая колонка: Интерактивная карта -->
+          <div class="lg:col-span-7 min-h-[380px] sm:min-h-[480px] border border-[#F5F0E6]/15 relative overflow-hidden reveal">
+            <div id="restaurant-map" class="w-full h-full min-h-[380px] sm:min-h-[480px] z-10"></div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- ========================================================================
+       ПОДВАЛ САЙТА (Монументальная подпись La SAGRA)
+       ======================================================================== -->
+  <footer class="bg-[#0E1822] text-[#C8BEB0] pt-12 pb-24 lg:pb-12 px-4 sm:px-8">
+    <div class="max-w-[1400px] mx-auto">
+      <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pb-10 border-b border-[#F5F0E6]/10">
+        <div class="brand-lockup text-[#F5F0E6]">
+          <span class="brand-lockup-main">
+            <span class="brand-la text-3xl">La</span>
+            <span class="brand-sagra text-2xl">SAGRA</span>
+          </span>
+          <span class="brand-sub text-[#C8BEB0]">Italian Kitchen &amp; Wine · Уральск, ЖК Central</span>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-6 text-xs font-mono-tech">
+          <a href="https://2gis.kz/uralsk/firm/70000001116870134" target="_blank" rel="noopener noreferrer" class="hover:text-[#C59B5F] transition-colors">Карточка 2ГИС</a>
+          <a href="https://go.2gis.com/7ZYyE" target="_blank" rel="noopener noreferrer" class="hover:text-[#C59B5F] transition-colors">52 фото в 2ГИС</a>
+          <a href="https://www.instagram.com/lasagra.restaurant/" target="_blank" rel="noopener noreferrer" class="hover:text-[#C59B5F] transition-colors">Instagram</a>
+          <a href="https://wa.me/77784551342" target="_blank" rel="noopener noreferrer" class="hover:text-[#C59B5F] transition-colors">WhatsApp +7 (778) 455-13-42</a>
+        </div>
+      </div>
+
+      <div class="py-8 text-center overflow-hidden select-none">
+        <p class="font-serif italic text-[#C59B5F]/20 text-[13vw] leading-none tracking-tight">La SAGRA</p>
+      </div>
+
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#8E8375] pt-4 border-t border-[#F5F0E6]/10">
+        <p>© 2026 La SAGRA Restaurant. г. Уральск, ул. Маншук Маметовой, 44 (ЖК Central).</p>
+        <p class="font-mono-tech">Ежедневно 12:00 – 00:00 · Кухня до 23:00</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Мобильная нижняя панель быстрого действия -->
+  <div class="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-[#0E1822]/95 backdrop-blur-md border-t border-[#F5F0E6]/15 px-3 py-2.5 flex items-center gap-2">
+    <a href="tel:+77784551342" class="px-3.5 py-2.5 border border-[#F5F0E6]/20 text-[#F5F0E6] text-xs font-mono-tech flex items-center justify-center">
+      Звонок
+    </a>
+    <a href="#menu" class="px-3.5 py-2.5 border border-[#F5F0E6]/20 text-[#F5F0E6] text-xs font-mono-tech flex items-center justify-center">
+      Меню
+    </a>
+    <button type="button" data-open-booking class="btn-brass flex-1 !py-2.5 !px-3 !text-[11px]">
+      Бронь стола / Заказ
+    </button>
+  </div>
+
+  <!-- ========================================================================
+       МОДАЛЬНОЕ ОКНО 1: КАРТОЧКА БЛЮДА С ПОЯСНЕНИЕМ ТЕРМИНА И СОСТАВОМ
+       ======================================================================== -->
+  <div id="dish-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 modal-backdrop" role="dialog" aria-modal="true">
+    <div class="bg-[#FAF7F2] text-[#181412] border border-[#181412]/20 max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
+      <div class="relative aspect-[16/10] bg-[#E2D9C8]">
+        <img id="modal-dish-image" src="assets/photos/pasta-frutti-di-mare.jpg" alt="" class="w-full h-full object-cover">
+        <button type="button" id="close-dish-modal" class="absolute top-3 right-3 w-10 h-10 bg-[#181412]/80 text-[#F5F0E6] flex items-center justify-center hover:bg-[#3A1212] transition-colors" aria-label="Закрыть">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+        <span id="modal-dish-note" class="absolute bottom-3 left-3 px-3 py-1 bg-[#3A1212] text-[#F5F0E6] font-mono-tech text-[11px] uppercase tracking-wider"></span>
+      </div>
+
+      <div class="p-6 sm:p-8 space-y-5">
+        <div class="flex flex-wrap items-baseline justify-between gap-4 border-b border-[#181412]/15 pb-4">
+          <div>
+            <p id="modal-dish-title-it" class="font-serif italic text-lg text-[#3A1212]"></p>
+            <h3 id="modal-dish-title" class="font-serif text-2xl sm:text-3xl font-semibold text-[#181412]"></h3>
+          </div>
+          <div class="text-right">
+            <div id="modal-dish-price" class="font-serif text-3xl font-semibold text-[#3A1212] tabular-nums"></div>
+            <div id="modal-dish-meta" class="font-mono-tech text-xs text-[#52483E]"></div>
+          </div>
+        </div>
+
+        <!-- Кулинарная справка -->
+        <div id="modal-dish-term-box" class="term-glossary-box"></div>
+
+        <p id="modal-dish-desc" class="text-sm sm:text-base text-[#52483E] leading-relaxed"></p>
+
+        <div>
+          <p class="font-mono-tech text-[11px] uppercase tracking-wider text-[#52483E] mb-2">Основные ингредиенты:</p>
+          <div id="modal-dish-ingredients" class="flex flex-wrap gap-1.5"></div>
+        </div>
+
+        <div class="p-4 bg-[#EAE2D3] border border-[#181412]/10 text-xs text-[#181412]">
+          <span class="font-mono-tech uppercase tracking-wider text-[#3A1212] font-semibold block mb-1">Рекомендация к подаче:</span>
+          <span id="modal-dish-wine" class="text-[#52483E]"></span>
+        </div>
+
+        <div class="pt-2 flex flex-col sm:flex-row gap-3">
+          <button type="button" id="modal-dish-add-btn" class="btn-bordeaux flex-1">
+            Добавить в предзаказ / доставку
+          </button>
+          <button type="button" id="modal-dish-book-now" class="btn-outline-dark">
+            Перейти к брони стола
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       МОДАЛЬНОЕ ОКНО 2: БЫСТРОЕ БРОНИРОВАНИЕ СТОЛА
+       ======================================================================== -->
+  <div id="reservation-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 modal-backdrop" role="dialog" aria-modal="true">
+    <div class="bg-[#FAF7F2] text-[#181412] border border-[#181412]/20 max-w-xl w-full max-h-[92vh] overflow-y-auto p-6 sm:p-8 shadow-2xl">
+      <div class="flex items-start justify-between gap-4 pb-4 mb-5 border-b border-[#181412]/15">
+        <div>
+          <span class="font-mono-tech text-[10px] uppercase tracking-widest text-[#3A1212]">La SAGRA · Уральск, ЖК Central</span>
+          <h3 class="font-serif text-2xl sm:text-3xl text-[#181412]">Резерв стола и предзаказ</h3>
+        </div>
+        <button type="button" id="close-reservation-modal" class="w-9 h-9 border border-[#181412]/20 flex items-center justify-center text-[#52483E] hover:text-[#181412]" aria-label="Закрыть">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+
+      <form id="modal-booking-form" class="space-y-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+          <div>
+            <label class="block font-mono-tech text-[11px] uppercase tracking-wider text-[#52483E] mb-1">Ваше имя *</label>
+            <input type="text" name="name" required placeholder="Ваше имя" class="input-fresco">
+          </div>
+          <div>
+            <label class="block font-mono-tech text-[11px] uppercase tracking-wider text-[#52483E] mb-1">Телефон / WhatsApp *</label>
+            <input type="tel" name="phone" required placeholder="+7 (778) 000-00-00" class="input-fresco font-mono-tech">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+          <div>
+            <label class="block font-mono-tech text-[11px] uppercase tracking-wider text-[#52483E] mb-1">Дата *</label>
+            <input type="date" id="modal-booking-date" name="date" required class="input-fresco font-mono-tech">
+          </div>
+          <div>
+            <label class="block font-mono-tech text-[11px] uppercase tracking-wider text-[#52483E] mb-1">Время (до 23:00) *</label>
+            <select id="modal-booking-time" name="time" required class="input-fresco font-mono-tech">
+              <option value="12:30">12:30</option>
+              <option value="14:00">14:00</option>
+              <option value="17:00">17:00</option>
+              <option value="18:30">18:30</option>
+              <option value="19:30" selected>19:30</option>
+              <option value="20:30">20:30</option>
+              <option value="21:30">21:30</option>
+              <option value="22:15">22:15</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-mono-tech text-[11px] uppercase tracking-wider text-[#52483E] mb-1">Гостей *</label>
+            <select name="guests" required class="input-fresco font-mono-tech">
+              <option value="2 персоны" selected>2 персоны</option>
+              <option value="3 персоны">3 персоны</option>
+              <option value="4 персоны">4 персоны</option>
+              <option value="5–6 персон">5–6 персон</option>
+              <option value="7–10 персон">7–10 персон</option>
+              <option value="12+ персон (Банкет)">12+ персон</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-mono-tech text-[11px] uppercase tracking-wider text-[#52483E] mb-1">Выберите зал (1 или 2 этаж)</label>
+          <select id="modal-booking-zone" name="zone" class="input-fresco">
+            <option value="1 этаж — Зал под кирпичными сводами">1 этаж — Зал под кирпичными сводами (люстра с лимонами)</option>
+            <option value="1 этаж — Каминный салон у лестницы">1 этаж — Каминный салон у резного портала и зеркала</option>
+            <option value="1 этаж — Зона у мозаичной печи Forno">1 этаж — Зона у дровяной мозаичной печи Forno a Legna</option>
+            <option value="2 этаж — Верхняя галерея и банкетный зал">2 этаж — Верхняя галерея (уединенная посадка / банкет)</option>
+          </select>
+        </div>
+
+        <div id="modal-selected-dishes-box" class="p-3.5 bg-[#F3EFE6] border border-[#181412]/15 text-xs">
+          <span class="font-mono-tech uppercase tracking-wider text-[#3A1212] font-semibold block mb-1">Выбранные блюда для предзаказа:</span>
+          <div id="modal-selected-dishes-list" class="text-[#52483E]">Не выбраны</div>
+        </div>
+
+        <div>
+          <label class="block font-mono-tech text-[11px] uppercase tracking-wider text-[#52483E] mb-1">Комментарий (день рождения, пожелания)</label>
+          <textarea name="notes" rows="2" placeholder="Пожелания к столу или времени подачи..." class="input-fresco"></textarea>
+        </div>
+
+        <button type="submit" class="btn-bordeaux w-full">
+          Сформировать приглашение и открыть WhatsApp
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       МОДАЛЬНОЕ ОКНО 3: КАРТОЧКА ПОДТВЕРЖДЕНИЯ БРОНИ (LS-XXXX)
+       ======================================================================== -->
+  <div id="confirmation-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 modal-backdrop" role="dialog" aria-modal="true">
+    <div class="bg-[#FAF7F2] text-[#181412] border-2 border-[#3A1212] max-w-md w-full p-6 sm:p-8 shadow-2xl">
+      <div class="text-center border-b border-[#181412]/15 pb-4 mb-5">
+        <p class="font-mono-tech text-[11px] uppercase tracking-widest text-[#3A1212]">Карта гостя сформирована</p>
+        <h3 class="font-serif text-3xl text-[#181412] mt-1">La SAGRA</h3>
+        <p class="font-mono-tech text-xs text-[#52483E] mt-1">Код резерва: <strong id="confirm-code" class="text-[#3A1212]">LS-0000</strong></p>
+      </div>
+
+      <div id="confirm-details" class="space-y-2 text-xs sm:text-sm border-b border-[#181412]/15 pb-5 mb-5">
+        <!-- Заполняется в app.js -->
+      </div>
+
+      <div class="space-y-2.5">
+        <a id="confirm-whatsapp-link" href="https://wa.me/77784551342" target="_blank" rel="noopener noreferrer" class="btn-bordeaux w-full text-center">
+          Отправить администратору в WhatsApp
+        </a>
+        <button type="button" id="close-confirmation-modal" class="btn-outline-dark w-full">
+          Закрыть окно
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       МОДАЛЬНОЕ ОКНО 4: ЛАЙТБОКС ПРОСМОТРА РЕАЛЬНЫХ ФОТО 2ГИС
+       ======================================================================== -->
+  <div id="lightbox-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 modal-backdrop" role="dialog" aria-modal="true">
+    <div class="relative max-w-4xl w-full bg-[#0E1822] border border-[#F5F0E6]/20 p-3 sm:p-5">
+      <div class="flex items-center justify-between pb-3 mb-3 border-b border-[#F5F0E6]/15 text-[#F5F0E6]">
+        <div>
+          <span id="lightbox-zone" class="font-mono-tech text-[10px] uppercase tracking-widest text-[#C59B5F] block"></span>
+          <h4 id="lightbox-title" class="font-serif text-xl sm:text-2xl"></h4>
+        </div>
+        <button type="button" id="close-lightbox" class="w-9 h-9 border border-[#F5F0E6]/20 flex items-center justify-center text-[#F5F0E6] hover:border-[#C59B5F]" aria-label="Закрыть">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      <div class="aspect-[16/10] bg-black overflow-hidden">
+        <img id="lightbox-image" src="assets/photos/lemon-chandelier-arch.jpg" alt="" class="w-full h-full object-contain">
+      </div>
+      <p id="lightbox-subtitle" class="text-xs text-[#C8BEB0] mt-3"></p>
+    </div>
+  </div>
+
+  <!-- Скрипты -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script src="js/menu-data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

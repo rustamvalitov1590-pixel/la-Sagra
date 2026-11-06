@@ -1,0 +1,659 @@
+/* ==========================================================================
+   La SAGRA — Italian Kitchen & Wine (г. Уральск, ЖК Central)
+   Концепция «Palazzo & Fresco»: Фресковый пергамент · Бордовый кирпич · Венецианский синий
+   ========================================================================== */
+
+:root {
+  /* Светлая фресковая палитра (стены с кипарисами, резной камин, печатное меню) */
+  --bg-fresco: #F3EFE6;
+  --bg-parchment: #EAE2D3;
+  --bg-ivory: #FAF7F2;
+  --ink-dark: #181412;
+  --ink-secondary: #52483E;
+  --ink-muted: #7D7165;
+  --line-fresco: rgba(24, 20, 18, 0.12);
+  --line-fresco-strong: rgba(24, 20, 18, 0.24);
+
+  /* Бордовая палитра (порталы фасада, велюровые кресла, плитка у печи, банкетный текстиль) */
+  --bg-bordeaux: #3A1212;
+  --bg-bordeaux-deep: #240A0A;
+  --bg-bordeaux-card: #2E0E0E;
+  --terracotta: #B84A24;
+
+  /* Венецианская синяя палитра (стеновые панели буазери, жилеты официантов, керамика) */
+  --bg-venetian: #162432;
+  --bg-venetian-deep: #0E1822;
+  --bg-venetian-card: #1C2D3E;
+  --cobalt-ceramic: #1E3F66;
+
+  /* Светлый текст для темных секций (бордо и венецианский синий) */
+  --cream-light: #F5F0E6;
+  --cream-secondary: #C8BEB0;
+  --cream-muted: #8E8375;
+  --line-dark: rgba(245, 240, 230, 0.14);
+  --line-dark-strong: rgba(197, 155, 95, 0.38);
+
+  /* Акценты: латунь бра, антикварное зеркало и лимоны Амальфи под сводами */
+  --brass: #C59B5F;
+  --brass-dark: #9A733B;
+  --lemon: #D9A738;
+
+  /* Типографика */
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-script: 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Единая кривая анимации (без пружин и резких скачков) */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--bg-fresco);
+  color: var(--ink-dark);
+  font-family: var(--font-sans);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+  background-color: var(--bg-fresco);
+  color: var(--ink-dark);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@media (max-width: 1023px) {
+  body {
+    padding-bottom: 72px;
+  }
+}
+
+::selection {
+  background-color: var(--bg-bordeaux);
+  color: var(--cream-light);
+}
+
+/* ==========================================================================
+   1. Фирменная типографика и логотип La SAGRA (как на фасаде ЖК Central)
+   ========================================================================== */
+
+.font-serif {
+  font-family: var(--font-display);
+}
+
+.font-mono-tech {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Точная реконструкция логотипа с фасада: каллиграфическое "La" + гротеск "SAGRA" */
+.brand-lockup {
+  display: inline-flex;
+  flex-direction: column;
+  text-decoration: none;
+  line-height: 1;
+}
+
+.brand-lockup-main {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.35rem;
+}
+
+.brand-la {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 600;
+  font-size: 2rem;
+  color: var(--brass);
+  letter-spacing: -0.02em;
+  transform: translateY(1px);
+}
+
+.brand-sagra {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 1.35rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.brand-sub {
+  font-family: var(--font-sans);
+  font-size: 0.56rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  margin-top: 0.2rem;
+  opacity: 0.72;
+}
+
+.editorial-display {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(2.4rem, 5.2vw, 4.9rem);
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+}
+
+.editorial-h2 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(2rem, 4vw, 3.6rem);
+  line-height: 1.04;
+  letter-spacing: -0.015em;
+}
+
+.section-index {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* ==========================================================================
+   2. Архитектурные текстуры и формы реального интерьера La Sagra
+   ========================================================================== */
+
+/* Секции контрастной палитры */
+.theme-fresco {
+  background-color: var(--bg-fresco);
+  color: var(--ink-dark);
+}
+
+.theme-parchment {
+  background-color: var(--bg-parchment);
+  color: var(--ink-dark);
+}
+
+.theme-bordeaux {
+  background-color: var(--bg-bordeaux);
+  color: var(--cream-light);
+}
+
+.theme-venetian {
+  background-color: var(--bg-venetian);
+  color: var(--cream-light);
+}
+
+/* Полосатая бордово-кремовая плитка как за мозаичной печью (owner-1.jpg) */
+.forno-tile-accent {
+  background: repeating-linear-gradient(
+    90deg,
+    #4A1515 0px,
+    #4A1515 18px,
+    #E8DFD1 18px,
+    #E8DFD1 36px
+  );
+}
+
+/* Арочное обрамление фотографий (кирпичные своды и стрельчатые окна La Sagra) */
+.arch-frame {
+  position: relative;
+  border-radius: 999px 999px 0 0;
+  overflow: hidden;
+  border: 1px solid var(--brass);
+}
+
+.arch-frame::after {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border-radius: 999px 999px 0 0;
+  border: 1px solid rgba(197, 155, 95, 0.35);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Прямоугольная архитектурная рамка с внутренним кантом */
+.palazzo-frame {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--line-fresco-strong);
+}
+
+.palazzo-frame-dark {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--line-dark);
+}
+
+/* Керамический синий пунктир (отсылка к расписным тарелкам La Sagra из food-7.jpg, food-9.jpg) */
+.ceramic-rim-top {
+  border-top: 3px dashed rgba(30, 63, 102, 0.22);
+}
+
+/* ==========================================================================
+   3. Шапка и навигация
+   ========================================================================== */
+
+#main-header {
+  background-color: rgba(14, 24, 34, 0.94);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line-dark);
+  transition: background-color 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
+}
+
+#main-header.header-scrolled {
+  background-color: rgba(14, 24, 34, 0.98);
+  border-bottom-color: rgba(197, 155, 95, 0.3);
+}
+
+.nav-link {
+  position: relative;
+  font-size: 0.74rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cream-secondary);
+  transition: color 0.25s var(--ease-out);
+  padding: 0.35rem 0;
+}
+
+.nav-link:hover {
+  color: var(--cream-light);
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background-color: var(--brass);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.3s var(--ease-out);
+}
+
+.nav-link:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* ==========================================================================
+   4. Кнопки (Строгая геометрия без ИИ-свечений)
+   ========================================================================== */
+
+.btn-bordeaux {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  padding: 0.95rem 1.75rem;
+  background-color: var(--bg-bordeaux);
+  color: var(--cream-light);
+  border: 1px solid var(--brass);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.25s var(--ease-out), color 0.25s var(--ease-out), transform 0.25s var(--ease-out);
+}
+
+.btn-bordeaux:hover {
+  background-color: #4D1818;
+  transform: translateY(-1px);
+}
+
+.btn-brass {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  padding: 0.95rem 1.75rem;
+  background-color: var(--brass);
+  color: #14100E;
+  border: 1px solid var(--brass);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.25s var(--ease-out), transform 0.25s var(--ease-out);
+}
+
+.btn-brass:hover {
+  background-color: #D4AD73;
+  transform: translateY(-1px);
+}
+
+.btn-outline-light {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  padding: 0.95rem 1.75rem;
+  background-color: transparent;
+  color: var(--cream-light);
+  border: 1px solid rgba(245, 240, 230, 0.28);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: border-color 0.25s var(--ease-out), background-color 0.25s var(--ease-out);
+}
+
+.btn-outline-light:hover {
+  border-color: var(--brass);
+  background-color: rgba(197, 155, 95, 0.1);
+}
+
+.btn-outline-dark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  padding: 0.9rem 1.6rem;
+  background-color: transparent;
+  color: var(--ink-dark);
+  border: 1px solid var(--line-fresco-strong);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.25s var(--ease-out), color 0.25s var(--ease-out), border-color 0.25s var(--ease-out);
+}
+
+.btn-outline-dark:hover {
+  background-color: var(--ink-dark);
+  color: var(--bg-fresco);
+  border-color: var(--ink-dark);
+}
+
+/* ==========================================================================
+   5. Интерактивный переключатель 4 реальных залов (1 и 2 этаж)
+   ========================================================================== */
+
+.zone-tab-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  padding: 1.15rem 1.35rem;
+  background-color: var(--bg-ivory);
+  border: 1px solid var(--line-fresco);
+  cursor: pointer;
+  transition: background-color 0.25s var(--ease-out), border-color 0.25s var(--ease-out), color 0.25s var(--ease-out);
+}
+
+.zone-tab-btn:hover {
+  border-color: var(--brass-dark);
+}
+
+.zone-tab-btn.active {
+  background-color: var(--bg-venetian);
+  color: var(--cream-light);
+  border-color: var(--bg-venetian);
+}
+
+.zone-tab-btn.active .zone-tab-floor {
+  color: var(--brass);
+}
+
+.zone-tab-btn.active .zone-tab-sub {
+  color: var(--cream-secondary);
+}
+
+/* ==========================================================================
+   6. Иллюстрированное меню «La Carta Illustrata» (Светлый пергамент + Керамика)
+   ========================================================================== */
+
+.category-pill {
+  white-space: nowrap;
+  padding: 0.75rem 1.3rem;
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-secondary);
+  background-color: var(--bg-ivory);
+  border: 1px solid var(--line-fresco);
+  cursor: pointer;
+  transition: all 0.25s var(--ease-out);
+}
+
+.category-pill:hover {
+  color: var(--ink-dark);
+  border-color: var(--ink-dark);
+}
+
+.category-pill.active {
+  background-color: var(--bg-bordeaux);
+  color: var(--cream-light);
+  border-color: var(--bg-bordeaux);
+}
+
+/* Карточка блюда в светлом фресковом стиле с синим керамическим акцентом */
+.dish-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-ivory);
+  border: 1px solid var(--line-fresco);
+  transition: border-color 0.3s var(--ease-out), transform 0.3s var(--ease-out);
+}
+
+.dish-card:hover {
+  border-color: var(--brass-dark);
+}
+
+.dish-img-wrap {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  background-color: #E2D9C8;
+}
+
+.dish-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.65s var(--ease-out);
+}
+
+.dish-card:hover .dish-img-wrap img {
+  transform: scale(1.04);
+}
+
+/* Пояснение итальянского термина (решает боль гостей из отзывов 2ГИС!) */
+.term-glossary-box {
+  background-color: var(--bg-fresco);
+  border-left: 2px solid var(--cobalt-ceramic);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.75rem;
+  color: var(--ink-secondary);
+  line-height: 1.45;
+}
+
+/* Печатный режим меню La Carta */
+.carta-row {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.35rem 1rem;
+  border-bottom: 1px solid var(--line-fresco);
+  transition: background-color 0.25s var(--ease-out), padding-left 0.25s var(--ease-out);
+  cursor: pointer;
+}
+
+@media (min-width: 768px) {
+  .carta-row {
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+}
+
+.carta-row:hover {
+  background-color: rgba(197, 155, 95, 0.1);
+  padding-left: 1.4rem;
+}
+
+.carta-leader {
+  flex: 1;
+  border-bottom: 1px dotted rgba(24, 20, 18, 0.28);
+  margin: 0 0.75rem;
+  position: relative;
+  top: -4px;
+}
+
+#carta-hover-preview {
+  position: fixed;
+  width: 260px;
+  height: 195px;
+  pointer-events: none;
+  z-index: 90;
+  opacity: 0;
+  transform: scale(0.94);
+  transition: opacity 0.25s var(--ease-out), transform 0.25s var(--ease-out);
+  border: 2px solid var(--bg-ivory);
+  box-shadow: 0 20px 40px rgba(24, 20, 18, 0.28);
+  overflow: hidden;
+  background: var(--bg-ivory);
+}
+
+#carta-hover-preview.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ==========================================================================
+   7. Архивная фотогалерея 2ГИС
+   ========================================================================== */
+
+.gallery-filter-btn {
+  padding: 0.65rem 1.2rem;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--cream-secondary);
+  background: transparent;
+  border: 1px solid var(--line-dark);
+  cursor: pointer;
+  transition: all 0.25s var(--ease-out);
+}
+
+.gallery-filter-btn:hover {
+  color: var(--cream-light);
+  border-color: var(--brass);
+}
+
+.gallery-filter-btn.active {
+  background-color: var(--brass);
+  color: #14100E;
+  border-color: var(--brass);
+  font-weight: 600;
+}
+
+.gallery-item {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid var(--line-dark);
+  background-color: var(--bg-venetian-deep);
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.65s var(--ease-out);
+}
+
+.gallery-item:hover img {
+  transform: scale(1.04);
+}
+
+/* ==========================================================================
+   8. Формы бронирования и предзаказа
+   ========================================================================== */
+
+.input-fresco {
+  width: 100%;
+  background-color: var(--bg-ivory);
+  border: 1px solid var(--line-fresco-strong);
+  color: var(--ink-dark);
+  padding: 0.85rem 1rem;
+  font-size: 0.9rem;
+  font-family: var(--font-sans);
+  transition: border-color 0.25s var(--ease-out);
+  border-radius: 0;
+}
+
+.input-fresco:focus {
+  outline: none;
+  border-color: var(--bg-bordeaux);
+}
+
+.input-fresco::placeholder {
+  color: var(--ink-muted);
+}
+
+/* Плавное появление при скролле */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Скрытие скроллбаров в горизонтальных фильтрах */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Модальные окна */
+.modal-backdrop {
+  background-color: rgba(14, 24, 34, 0.84);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+/* Темная стилизация карты с теплым оттенком */
+.leaflet-container {
+  background: #162432 !important;
+  font-family: var(--font-sans) !important;
+}
+
+.leaflet-tile-pane {
+  filter: grayscale(85%) contrast(105%) brightness(92%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
