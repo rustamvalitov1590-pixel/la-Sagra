@@ -1,51 +1,39 @@
 /* ==========================================================================
    La SAGRA — Italian Kitchen & Wine (г. Уральск, ЖК Central)
-   Концепция «Palazzo & Fresco»: Фресковый пергамент · Бордовый кирпич · Венецианский синий
+   Органическая итальянская эстетика: воздух, мягкие арки, плавная пластика
+   Палитра: Фреска (#F3EFE6) · Бордо (#3A1212) · Венецианский синий (#162432) · Латунь (#C59B5F)
    ========================================================================== */
 
 :root {
-  /* Светлая фресковая палитра (стены с кипарисами, резной камин, печатное меню) */
   --bg-fresco: #F3EFE6;
   --bg-parchment: #EAE2D3;
   --bg-ivory: #FAF7F2;
   --ink-dark: #181412;
-  --ink-secondary: #52483E;
-  --ink-muted: #7D7165;
-  --line-fresco: rgba(24, 20, 18, 0.12);
-  --line-fresco-strong: rgba(24, 20, 18, 0.24);
+  --ink-secondary: #564C42;
+  --ink-muted: #84786B;
 
-  /* Бордовая палитра (порталы фасада, велюровые кресла, плитка у печи, банкетный текстиль) */
   --bg-bordeaux: #3A1212;
   --bg-bordeaux-deep: #240A0A;
-  --bg-bordeaux-card: #2E0E0E;
   --terracotta: #B84A24;
 
-  /* Венецианская синяя палитра (стеновые панели буазери, жилеты официантов, керамика) */
   --bg-venetian: #162432;
   --bg-venetian-deep: #0E1822;
-  --bg-venetian-card: #1C2D3E;
   --cobalt-ceramic: #1E3F66;
 
-  /* Светлый текст для темных секций (бордо и венецианский синий) */
   --cream-light: #F5F0E6;
-  --cream-secondary: #C8BEB0;
-  --cream-muted: #8E8375;
-  --line-dark: rgba(245, 240, 230, 0.14);
-  --line-dark-strong: rgba(197, 155, 95, 0.38);
+  --cream-secondary: #CFC5B7;
+  --cream-muted: #968B7C;
 
-  /* Акценты: латунь бра, антикварное зеркало и лимоны Амальфи под сводами */
   --brass: #C59B5F;
-  --brass-dark: #9A733B;
-  --lemon: #D9A738;
+  --brass-light: #D6B07A;
 
-  /* Типографика */
   --font-display: 'Cormorant Garamond', Georgia, serif;
-  --font-script: 'Cormorant Garamond', Georgia, serif;
   --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
 
-  /* Единая кривая анимации (без пружин и резких скачков) */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --radius-card: 28px;
+  --radius-soft: 18px;
+  --radius-pill: 9999px;
 }
 
 *, *::before, *::after {
@@ -54,7 +42,7 @@
 
 html {
   scroll-behavior: smooth;
-  background-color: var(--bg-fresco);
+  background-color: var(--bg-venetian-deep);
   color: var(--ink-dark);
   font-family: var(--font-sans);
   -webkit-text-size-adjust: 100%;
@@ -65,14 +53,14 @@ body {
   overflow-x: hidden;
   background-color: var(--bg-fresco);
   color: var(--ink-dark);
-  line-height: 1.6;
+  line-height: 1.7;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 @media (max-width: 1023px) {
   body {
-    padding-bottom: 72px;
+    padding-bottom: 76px;
   }
 }
 
@@ -82,23 +70,17 @@ body {
 }
 
 /* ==========================================================================
-   1. Фирменная типографика и логотип La SAGRA (как на фасаде ЖК Central)
+   1. Типографика и фирменный логотип La SAGRA
    ========================================================================== */
 
 .font-serif {
   font-family: var(--font-display);
 }
 
-.font-mono-tech {
-  font-family: var(--font-mono);
-  font-variant-numeric: tabular-nums;
-}
-
 .tabular-nums {
   font-variant-numeric: tabular-nums;
 }
 
-/* Точная реконструкция логотипа с фасада: каллиграфическое "La" + гротеск "SAGRA" */
 .brand-lockup {
   display: inline-flex;
   flex-direction: column;
@@ -109,14 +91,14 @@ body {
 .brand-lockup-main {
   display: inline-flex;
   align-items: baseline;
-  gap: 0.35rem;
+  gap: 0.38rem;
 }
 
 .brand-la {
   font-family: var(--font-display);
   font-style: italic;
   font-weight: 600;
-  font-size: 2rem;
+  font-size: 2.1rem;
   color: var(--brass);
   letter-spacing: -0.02em;
   transform: translateY(1px);
@@ -125,51 +107,47 @@ body {
 .brand-sagra {
   font-family: var(--font-sans);
   font-weight: 500;
-  font-size: 1.35rem;
+  font-size: 1.3rem;
   letter-spacing: 0.24em;
   text-transform: uppercase;
 }
 
 .brand-sub {
   font-family: var(--font-sans);
-  font-size: 0.56rem;
-  letter-spacing: 0.32em;
+  font-size: 0.54rem;
+  letter-spacing: 0.3em;
   text-transform: uppercase;
-  margin-top: 0.2rem;
+  margin-top: 0.25rem;
   opacity: 0.72;
 }
 
 .editorial-display {
   font-family: var(--font-display);
   font-weight: 500;
-  font-size: clamp(2.4rem, 5.2vw, 4.9rem);
-  line-height: 0.98;
-  letter-spacing: -0.02em;
+  font-size: clamp(2.15rem, 3.8vw, 3.9rem);
+  line-height: 1.06;
+  letter-spacing: -0.015em;
 }
 
 .editorial-h2 {
   font-family: var(--font-display);
   font-weight: 500;
-  font-size: clamp(2rem, 4vw, 3.6rem);
-  line-height: 1.04;
+  font-size: clamp(2.25rem, 4.4vw, 4.1rem);
+  line-height: 1.06;
   letter-spacing: -0.015em;
 }
 
-.section-index {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+.editorial-subtitle {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1.15rem, 1.7vw, 1.5rem);
+  color: var(--brass);
 }
 
 /* ==========================================================================
-   2. Архитектурные текстуры и формы реального интерьера La Sagra
+   2. Цветовые темы секций
    ========================================================================== */
 
-/* Секции контрастной палитры */
 .theme-fresco {
   background-color: var(--bg-fresco);
   color: var(--ink-dark);
@@ -190,79 +168,43 @@ body {
   color: var(--cream-light);
 }
 
-/* Полосатая бордово-кремовая плитка как за мозаичной печью (owner-1.jpg) */
-.forno-tile-accent {
-  background: repeating-linear-gradient(
-    90deg,
-    #4A1515 0px,
-    #4A1515 18px,
-    #E8DFD1 18px,
-    #E8DFD1 36px
-  );
-}
-
-/* Арочное обрамление фотографий (кирпичные своды и стрельчатые окна La Sagra) */
-.arch-frame {
-  position: relative;
-  border-radius: 999px 999px 0 0;
-  overflow: hidden;
-  border: 1px solid var(--brass);
-}
-
-.arch-frame::after {
-  content: '';
-  position: absolute;
-  inset: 6px;
-  border-radius: 999px 999px 0 0;
-  border: 1px solid rgba(197, 155, 95, 0.35);
-  pointer-events: none;
-  z-index: 2;
-}
-
-/* Прямоугольная архитектурная рамка с внутренним кантом */
-.palazzo-frame {
-  position: relative;
-  overflow: hidden;
-  border: 1px solid var(--line-fresco-strong);
-}
-
-.palazzo-frame-dark {
-  position: relative;
-  overflow: hidden;
-  border: 1px solid var(--line-dark);
-}
-
-/* Керамический синий пунктир (отсылка к расписным тарелкам La Sagra из food-7.jpg, food-9.jpg) */
-.ceramic-rim-top {
-  border-top: 3px dashed rgba(30, 63, 102, 0.22);
-}
-
 /* ==========================================================================
-   3. Шапка и навигация
+   3. Умная шапка (Скрывается при скролле вниз, появляется при скролле вверх)
    ========================================================================== */
 
 #main-header {
-  background-color: rgba(14, 24, 34, 0.94);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--line-dark);
-  transition: background-color 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 45;
+  background-color: rgba(14, 24, 34, 0.55);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(245, 240, 230, 0.07);
+  transform: translate3d(0, 0, 0);
+  transition: transform 0.42s var(--ease-out), background-color 0.35s var(--ease-out), border-color 0.35s var(--ease-out);
+  will-change: transform;
 }
 
 #main-header.header-scrolled {
-  background-color: rgba(14, 24, 34, 0.98);
-  border-bottom-color: rgba(197, 155, 95, 0.3);
+  background-color: rgba(14, 24, 34, 0.94);
+  border-bottom-color: rgba(197, 155, 95, 0.22);
+}
+
+#main-header.header-hidden {
+  transform: translate3d(0, -105%, 0);
 }
 
 .nav-link {
   position: relative;
-  font-size: 0.74rem;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  font-size: 0.82rem;
+  font-weight: 400;
+  letter-spacing: 0.06em;
   color: var(--cream-secondary);
-  transition: color 0.25s var(--ease-out);
-  padding: 0.35rem 0;
+  white-space: nowrap;
+  transition: color 0.3s var(--ease-out);
+  padding: 0.4rem 0;
 }
 
 .nav-link:hover {
@@ -272,23 +214,550 @@ body {
 .nav-link::after {
   content: '';
   position: absolute;
-  left: 0;
+  left: 50%;
   bottom: 0;
-  width: 100%;
-  height: 1px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
   background-color: var(--brass);
-  transform: scaleX(0);
-  transform-origin: right;
+  transform: translateX(-50%) scale(0);
   transition: transform 0.3s var(--ease-out);
 }
 
 .nav-link:hover::after {
-  transform: scaleX(1);
-  transform-origin: left;
+  transform: translateX(-50%) scale(1);
 }
 
 /* ==========================================================================
-   4. Кнопки (Строгая геометрия без ИИ-свечений)
+   4. ЭФФЕКТ №1: ВХОД ЧЕРЕЗ РИМСКУЮ АРКУ (БЕЗ ПЕРЕКРЫТИЯ ТЕКСТА)
+   ========================================================================== */
+
+#hero-portal-track {
+  position: relative;
+  height: 215vh;
+  background-color: var(--bg-venetian-deep);
+  color: var(--cream-light);
+}
+
+@media (max-width: 767px) {
+  #hero-portal-track {
+    height: 185vh;
+  }
+}
+
+#hero-sticky-stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 50% 52%, #1C2E40 0%, #0E1822 74%);
+}
+
+/* Верхний пролог: гарантированно ВЫШЕ купола арки и с высоким z-index */
+#portal-top-caption {
+  position: absolute;
+  top: 5.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 28;
+  pointer-events: none;
+  white-space: nowrap;
+  transition: opacity 0.3s var(--ease-out), transform 0.3s var(--ease-out);
+}
+
+/* Центральная арка: опущена чуть ниже центра (margin-top: 2.75rem), чтобы не задевать верхний текст */
+#portal-arch-mask {
+  position: relative;
+  width: min(320px, 74vw);
+  height: min(430px, 52vh);
+  margin-top: 2.5rem;
+  border-radius: 999px 999px 28px 28px;
+  overflow: hidden;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.7), 0 0 0 1.5px rgba(197, 155, 95, 0.55);
+  z-index: 10;
+  will-change: width, height, border-radius, margin-top;
+}
+
+#portal-arch-inner-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.15);
+  will-change: transform;
+  filter: brightness(0.88);
+}
+
+/* Раздвигающиеся слова La и SAGRA на чистом темном фоне без карточек под ними */
+.portal-split-word-left,
+.portal-split-word-right {
+  position: absolute;
+  top: calc(50% + 1.25rem);
+  z-index: 18;
+  pointer-events: none;
+  will-change: transform, opacity;
+  white-space: nowrap;
+}
+
+.portal-split-word-left {
+  right: calc(50% + min(195px, 39vw));
+  transform: translate3d(0, -50%, 0);
+}
+
+.portal-split-word-right {
+  left: calc(50% + min(195px, 39vw));
+  transform: translate3d(0, -50%, 0);
+}
+
+/* Контент внутри зала после раскрытия арки: с большим верхним отступом от шапки */
+#portal-inside-content {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 6.5rem 1.5rem 2.75rem;
+  background: linear-gradient(
+    to top,
+    rgba(14, 24, 34, 0.94) 0%,
+    rgba(14, 24, 34, 0.68) 54%,
+    rgba(14, 24, 34, 0.25) 100%
+  );
+  opacity: 0;
+  transform: translate3d(0, 24px, 0);
+  pointer-events: none;
+  transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out);
+}
+
+@media (min-width: 768px) {
+  #portal-inside-content {
+    padding: 7.5rem 3.5rem 3.5rem;
+  }
+}
+
+#portal-inside-content.revealed {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  pointer-events: auto;
+}
+
+/* ==========================================================================
+   5. ЭФФЕКТ №2: ГОРИЗОНТАЛЬНАЯ ПРОГУЛКА ПО 4 ЗАЛАМ + ШИРОКИЕ 2-СТРОЧНЫЕ ТАБЫ
+   ========================================================================== */
+
+#zones-walk-track {
+  position: relative;
+  background-color: var(--bg-fresco);
+  color: var(--ink-dark);
+}
+
+@media (min-width: 1024px) {
+  #zones-walk-track {
+    height: 360vh;
+  }
+
+  #zones-sticky-viewport {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  #zones-horizontal-rail {
+    display: flex;
+    height: 100vh;
+    width: 400vw;
+    align-items: center;
+    will-change: transform;
+  }
+
+  .zone-walk-panel {
+    width: 100vw;
+    height: 100%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    padding: 3.5rem 6vw 6.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+}
+
+@media (max-width: 1023px) {
+  #zones-horizontal-rail {
+    display: flex;
+    flex-direction: column;
+    gap: 4.5rem;
+    padding: 3rem 1.25rem 4rem;
+  }
+
+  .zone-walk-panel {
+    width: 100%;
+    position: relative;
+  }
+}
+
+.zone-bg-watermark {
+  position: absolute;
+  top: 8%;
+  right: 6%;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(6rem, 15vw, 16rem);
+  line-height: 0.85;
+  color: rgba(58, 18, 18, 0.045);
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+  will-change: transform;
+}
+
+.arch-frame {
+  position: relative;
+  border-radius: 999px 999px 28px 28px;
+  overflow: hidden;
+  box-shadow: 0 30px 70px -15px rgba(24, 20, 18, 0.22);
+}
+
+.soft-photo-card {
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  box-shadow: 0 25px 60px -15px rgba(24, 20, 18, 0.2);
+}
+
+/* Широкие элегантные 2-строчные табы залов (не «толстые булочки»!) */
+.walk-step-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  text-align: left;
+  width: 100%;
+  min-width: 235px;
+  padding: 0.7rem 1.25rem;
+  border-radius: 16px;
+  background-color: rgba(250, 247, 242, 0.92);
+  color: var(--ink-dark);
+  border: 1px solid rgba(24, 20, 18, 0.08);
+  cursor: pointer;
+  transition: all 0.3s var(--ease-out);
+}
+
+.walk-step-btn:hover {
+  border-color: rgba(58, 18, 18, 0.3);
+  background-color: #FFFFFF;
+}
+
+.walk-step-line1 {
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-muted);
+  line-height: 1.25;
+  margin-bottom: 0.15rem;
+  white-space: nowrap;
+}
+
+.walk-step-line2 {
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--ink-dark);
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.walk-step-btn.active {
+  background-color: var(--bg-bordeaux);
+  color: var(--cream-light);
+  border-color: var(--bg-bordeaux);
+  box-shadow: 0 12px 26px -8px rgba(58, 18, 18, 0.45);
+}
+
+.walk-step-btn.active .walk-step-line1 {
+  color: var(--brass);
+}
+
+.walk-step-btn.active .walk-step-line2 {
+  color: var(--cream-light);
+}
+
+/* ==========================================================================
+   6. ЭФФЕКТ №3: ШТОРКИ ПРОЯВЛЕНИЯ КАДРОВ (CURTAIN REVEAL)
+   ========================================================================== */
+
+.curtain-reveal-box {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-card);
+  box-shadow: 0 32px 70px -18px rgba(0, 0, 0, 0.45);
+}
+
+.curtain-reveal-box img {
+  transform: scale(1.1);
+  transition: transform 1.2s var(--ease-out);
+}
+
+.curtain-reveal-box.in-view img {
+  transform: scale(1);
+}
+
+.curtain-mask {
+  clip-path: inset(8% 5% 8% 5% round 28px);
+  transition: clip-path 1s var(--ease-out);
+}
+
+.curtain-mask.in-view {
+  clip-path: inset(0% 0% 0% 0% round 28px);
+}
+
+/* ==========================================================================
+   7. ЭФФЕКТ №4: МЕНЮ «ЖИВОЙ НАКРЫТЫЙ СТОЛ»
+   ========================================================================== */
+
+.category-pill {
+  white-space: nowrap;
+  padding: 0.7rem 1.45rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--ink-secondary);
+  background-color: var(--bg-ivory);
+  border: 1px solid rgba(24, 20, 18, 0.08);
+  cursor: pointer;
+  transition: all 0.3s var(--ease-out);
+}
+
+.category-pill:hover {
+  color: var(--ink-dark);
+  border-color: rgba(24, 20, 18, 0.25);
+}
+
+.category-pill.active {
+  background-color: var(--bg-bordeaux);
+  color: var(--cream-light);
+  border-color: var(--bg-bordeaux);
+  box-shadow: 0 10px 25px -8px rgba(58, 18, 18, 0.4);
+}
+
+.editorial-dish-card {
+  position: relative;
+  background-color: transparent;
+  transition: transform 0.4s var(--ease-out);
+  transform-style: preserve-3d;
+}
+
+.dish-photo-vessel {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-card);
+  background-color: #E5DDD0;
+  box-shadow: 0 22px 50px -16px rgba(24, 20, 18, 0.16);
+  transition: box-shadow 0.4s var(--ease-out);
+}
+
+.editorial-dish-card:hover .dish-photo-vessel {
+  box-shadow: 0 30px 65px -16px rgba(58, 18, 18, 0.24);
+}
+
+.term-glossary-box {
+  background-color: rgba(250, 247, 242, 0.85);
+  border-radius: 14px;
+  padding: 0.65rem 1rem;
+  font-size: 0.82rem;
+  color: var(--ink-secondary);
+  line-height: 1.5;
+}
+
+.carta-row {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.6rem 1.25rem;
+  border-bottom: 1px solid rgba(24, 20, 18, 0.1);
+  border-radius: 16px;
+  transition: background-color 0.25s var(--ease-out), padding-left 0.25s var(--ease-out);
+  cursor: pointer;
+}
+
+@media (min-width: 768px) {
+  .carta-row {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+}
+
+.carta-row:hover {
+  background-color: rgba(250, 247, 242, 0.9);
+  padding-left: 1.75rem;
+}
+
+#carta-hover-preview {
+  position: fixed;
+  width: 280px;
+  height: 210px;
+  pointer-events: none;
+  z-index: 90;
+  opacity: 0;
+  transform: scale(0.92) rotate(-2deg);
+  transition: opacity 0.25s var(--ease-out), transform 0.25s var(--ease-out);
+  border-radius: 22px;
+  border: 4px solid var(--bg-ivory);
+  box-shadow: 0 28px 60px rgba(24, 20, 18, 0.28);
+  overflow: hidden;
+  background: var(--bg-ivory);
+}
+
+#carta-hover-preview.visible {
+  opacity: 1;
+  transform: scale(1) rotate(0deg);
+}
+
+/* Парящая капсула предзаказа внизу экрана */
+#floating-dinner-tray {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translate3d(-50%, 140%, 0);
+  z-index: 42;
+  background-color: rgba(36, 10, 10, 0.95);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  color: var(--cream-light);
+  border: 1px solid rgba(197, 155, 95, 0.45);
+  border-radius: var(--radius-pill);
+  padding: 0.65rem 0.85rem 0.65rem 1.35rem;
+  box-shadow: 0 24px 55px rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  transition: transform 0.45s var(--ease-out);
+  max-width: 92vw;
+}
+
+@media (max-width: 1023px) {
+  #floating-dinner-tray {
+    bottom: 5.2rem;
+  }
+}
+
+#floating-dinner-tray.visible {
+  transform: translate3d(-50%, 0, 0);
+}
+
+/* ==========================================================================
+   8. ПЛАВАЮЩИЕ КНОПКИ БЫСТРОЙ СВЯЗИ И СТРЕЛКА «НАВЕРХ» (ПРАВЫЙ НИЖНИЙ УГОЛ)
+   ========================================================================== */
+
+#floating-actions-dock {
+  position: fixed;
+  right: 1.35rem;
+  bottom: 1.5rem;
+  z-index: 44;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.65rem;
+}
+
+@media (max-width: 1023px) {
+  #floating-actions-dock {
+    right: 1rem;
+    bottom: 5.25rem;
+  }
+}
+
+.fab-action-btn {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.35);
+  transition: transform 0.3s var(--ease-out), background-color 0.3s var(--ease-out), opacity 0.3s var(--ease-out);
+  text-decoration: none;
+}
+
+.fab-action-btn:hover {
+  transform: translateY(-3px) scale(1.04);
+}
+
+.fab-tooltip {
+  position: absolute;
+  right: calc(100% + 12px);
+  top: 50%;
+  transform: translateY(-50%) translateX(6px);
+  background-color: rgba(14, 24, 34, 0.94);
+  color: var(--cream-light);
+  padding: 0.4rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  border: 1px solid rgba(197, 155, 95, 0.3);
+  transition: opacity 0.25s var(--ease-out), transform 0.25s var(--ease-out);
+}
+
+@media (min-width: 768px) {
+  .fab-action-btn:hover .fab-tooltip {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+  }
+}
+
+/* Кнопка возврата наверх (скрыта в самом верху страницы) */
+#scroll-top-btn {
+  background-color: rgba(14, 24, 34, 0.9);
+  color: var(--brass);
+  border: 1px solid rgba(197, 155, 95, 0.4);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(12px) scale(0.9);
+}
+
+#scroll-top-btn.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+}
+
+#scroll-top-btn:hover {
+  background-color: var(--bg-bordeaux);
+  color: var(--cream-light);
+}
+
+/* Кнопка звонка */
+.fab-phone {
+  background-color: var(--bg-bordeaux);
+  color: var(--cream-light);
+  border: 1px solid rgba(197, 155, 95, 0.45);
+}
+
+/* Кнопка WhatsApp */
+.fab-whatsapp {
+  background-color: #1F7A4C;
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+/* ==========================================================================
+   9. Кнопки, Галерея и Формы
    ========================================================================== */
 
 .btn-bordeaux {
@@ -296,21 +765,22 @@ body {
   align-items: center;
   justify-content: center;
   gap: 0.65rem;
-  padding: 0.95rem 1.75rem;
+  padding: 0.95rem 2rem;
+  border-radius: var(--radius-pill);
   background-color: var(--bg-bordeaux);
   color: var(--cream-light);
-  border: 1px solid var(--brass);
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
+  border: 1px solid rgba(197, 155, 95, 0.4);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
   cursor: pointer;
-  transition: background-color 0.25s var(--ease-out), color 0.25s var(--ease-out), transform 0.25s var(--ease-out);
+  transition: background-color 0.3s var(--ease-out), transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
 }
 
 .btn-bordeaux:hover {
-  background-color: #4D1818;
-  transform: translateY(-1px);
+  background-color: #4F1818;
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px -10px rgba(58, 18, 18, 0.45);
 }
 
 .btn-brass {
@@ -318,21 +788,22 @@ body {
   align-items: center;
   justify-content: center;
   gap: 0.65rem;
-  padding: 0.95rem 1.75rem;
+  padding: 0.95rem 2rem;
+  border-radius: var(--radius-pill);
   background-color: var(--brass);
   color: #14100E;
   border: 1px solid var(--brass);
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   font-weight: 600;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
+  letter-spacing: 0.05em;
   cursor: pointer;
-  transition: background-color 0.25s var(--ease-out), transform 0.25s var(--ease-out);
+  transition: background-color 0.3s var(--ease-out), transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
 }
 
 .btn-brass:hover {
-  background-color: #D4AD73;
-  transform: translateY(-1px);
+  background-color: var(--brass-light);
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px -10px rgba(197, 155, 95, 0.4);
 }
 
 .btn-outline-light {
@@ -340,21 +811,21 @@ body {
   align-items: center;
   justify-content: center;
   gap: 0.65rem;
-  padding: 0.95rem 1.75rem;
-  background-color: transparent;
+  padding: 0.95rem 1.85rem;
+  border-radius: var(--radius-pill);
+  background-color: rgba(255, 255, 255, 0.04);
   color: var(--cream-light);
-  border: 1px solid rgba(245, 240, 230, 0.28);
-  font-size: 0.75rem;
-  font-weight: 500;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
+  border: 1px solid rgba(245, 240, 230, 0.25);
+  font-size: 0.8rem;
+  font-weight: 400;
+  letter-spacing: 0.05em;
   cursor: pointer;
-  transition: border-color 0.25s var(--ease-out), background-color 0.25s var(--ease-out);
+  transition: border-color 0.3s var(--ease-out), background-color 0.3s var(--ease-out);
 }
 
 .btn-outline-light:hover {
   border-color: var(--brass);
-  background-color: rgba(197, 155, 95, 0.1);
+  background-color: rgba(197, 155, 95, 0.14);
 }
 
 .btn-outline-dark {
@@ -362,16 +833,16 @@ body {
   align-items: center;
   justify-content: center;
   gap: 0.65rem;
-  padding: 0.9rem 1.6rem;
+  padding: 0.9rem 1.8rem;
+  border-radius: var(--radius-pill);
   background-color: transparent;
   color: var(--ink-dark);
-  border: 1px solid var(--line-fresco-strong);
-  font-size: 0.74rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  border: 1px solid rgba(24, 20, 18, 0.2);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
   cursor: pointer;
-  transition: background-color 0.25s var(--ease-out), color 0.25s var(--ease-out), border-color 0.25s var(--ease-out);
+  transition: background-color 0.3s var(--ease-out), color 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
 }
 
 .btn-outline-dark:hover {
@@ -380,180 +851,16 @@ body {
   border-color: var(--ink-dark);
 }
 
-/* ==========================================================================
-   5. Интерактивный переключатель 4 реальных залов (1 и 2 этаж)
-   ========================================================================== */
-
-.zone-tab-btn {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  text-align: left;
-  padding: 1.15rem 1.35rem;
-  background-color: var(--bg-ivory);
-  border: 1px solid var(--line-fresco);
-  cursor: pointer;
-  transition: background-color 0.25s var(--ease-out), border-color 0.25s var(--ease-out), color 0.25s var(--ease-out);
-}
-
-.zone-tab-btn:hover {
-  border-color: var(--brass-dark);
-}
-
-.zone-tab-btn.active {
-  background-color: var(--bg-venetian);
-  color: var(--cream-light);
-  border-color: var(--bg-venetian);
-}
-
-.zone-tab-btn.active .zone-tab-floor {
-  color: var(--brass);
-}
-
-.zone-tab-btn.active .zone-tab-sub {
-  color: var(--cream-secondary);
-}
-
-/* ==========================================================================
-   6. Иллюстрированное меню «La Carta Illustrata» (Светлый пергамент + Керамика)
-   ========================================================================== */
-
-.category-pill {
-  white-space: nowrap;
-  padding: 0.75rem 1.3rem;
-  font-size: 0.74rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--ink-secondary);
-  background-color: var(--bg-ivory);
-  border: 1px solid var(--line-fresco);
-  cursor: pointer;
-  transition: all 0.25s var(--ease-out);
-}
-
-.category-pill:hover {
-  color: var(--ink-dark);
-  border-color: var(--ink-dark);
-}
-
-.category-pill.active {
-  background-color: var(--bg-bordeaux);
-  color: var(--cream-light);
-  border-color: var(--bg-bordeaux);
-}
-
-/* Карточка блюда в светлом фресковом стиле с синим керамическим акцентом */
-.dish-card {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  background-color: var(--bg-ivory);
-  border: 1px solid var(--line-fresco);
-  transition: border-color 0.3s var(--ease-out), transform 0.3s var(--ease-out);
-}
-
-.dish-card:hover {
-  border-color: var(--brass-dark);
-}
-
-.dish-img-wrap {
-  position: relative;
-  overflow: hidden;
-  aspect-ratio: 4 / 3;
-  background-color: #E2D9C8;
-}
-
-.dish-img-wrap img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.65s var(--ease-out);
-}
-
-.dish-card:hover .dish-img-wrap img {
-  transform: scale(1.04);
-}
-
-/* Пояснение итальянского термина (решает боль гостей из отзывов 2ГИС!) */
-.term-glossary-box {
-  background-color: var(--bg-fresco);
-  border-left: 2px solid var(--cobalt-ceramic);
-  padding: 0.5rem 0.75rem;
-  font-size: 0.75rem;
-  color: var(--ink-secondary);
-  line-height: 1.45;
-}
-
-/* Печатный режим меню La Carta */
-.carta-row {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  padding: 1.35rem 1rem;
-  border-bottom: 1px solid var(--line-fresco);
-  transition: background-color 0.25s var(--ease-out), padding-left 0.25s var(--ease-out);
-  cursor: pointer;
-}
-
-@media (min-width: 768px) {
-  .carta-row {
-    flex-direction: row;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 1.5rem;
-  }
-}
-
-.carta-row:hover {
-  background-color: rgba(197, 155, 95, 0.1);
-  padding-left: 1.4rem;
-}
-
-.carta-leader {
-  flex: 1;
-  border-bottom: 1px dotted rgba(24, 20, 18, 0.28);
-  margin: 0 0.75rem;
-  position: relative;
-  top: -4px;
-}
-
-#carta-hover-preview {
-  position: fixed;
-  width: 260px;
-  height: 195px;
-  pointer-events: none;
-  z-index: 90;
-  opacity: 0;
-  transform: scale(0.94);
-  transition: opacity 0.25s var(--ease-out), transform 0.25s var(--ease-out);
-  border: 2px solid var(--bg-ivory);
-  box-shadow: 0 20px 40px rgba(24, 20, 18, 0.28);
-  overflow: hidden;
-  background: var(--bg-ivory);
-}
-
-#carta-hover-preview.visible {
-  opacity: 1;
-  transform: scale(1);
-}
-
-/* ==========================================================================
-   7. Архивная фотогалерея 2ГИС
-   ========================================================================== */
-
 .gallery-filter-btn {
-  padding: 0.65rem 1.2rem;
-  font-size: 0.72rem;
-  font-weight: 500;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
+  padding: 0.65rem 1.35rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.78rem;
+  font-weight: 400;
   color: var(--cream-secondary);
-  background: transparent;
-  border: 1px solid var(--line-dark);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(245, 240, 230, 0.14);
   cursor: pointer;
-  transition: all 0.25s var(--ease-out);
+  transition: all 0.3s var(--ease-out);
 }
 
 .gallery-filter-btn:hover {
@@ -572,51 +879,48 @@ body {
   position: relative;
   overflow: hidden;
   cursor: pointer;
-  border: 1px solid var(--line-dark);
+  border-radius: var(--radius-card);
   background-color: var(--bg-venetian-deep);
+  box-shadow: 0 24px 50px -15px rgba(0, 0, 0, 0.45);
 }
 
 .gallery-item img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.65s var(--ease-out);
+  transition: transform 0.8s var(--ease-out);
 }
 
 .gallery-item:hover img {
-  transform: scale(1.04);
+  transform: scale(1.05);
 }
-
-/* ==========================================================================
-   8. Формы бронирования и предзаказа
-   ========================================================================== */
 
 .input-fresco {
   width: 100%;
   background-color: var(--bg-ivory);
-  border: 1px solid var(--line-fresco-strong);
+  border: 1px solid rgba(24, 20, 18, 0.14);
   color: var(--ink-dark);
-  padding: 0.85rem 1rem;
-  font-size: 0.9rem;
+  padding: 0.95rem 1.2rem;
+  font-size: 0.92rem;
   font-family: var(--font-sans);
-  transition: border-color 0.25s var(--ease-out);
-  border-radius: 0;
+  border-radius: 16px;
+  transition: border-color 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out);
 }
 
 .input-fresco:focus {
   outline: none;
   border-color: var(--bg-bordeaux);
+  box-shadow: 0 0 0 3px rgba(58, 18, 18, 0.08);
 }
 
 .input-fresco::placeholder {
   color: var(--ink-muted);
 }
 
-/* Плавное появление при скролле */
 .reveal {
   opacity: 0;
-  transform: translateY(18px);
-  transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
+  transform: translateY(28px);
+  transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
 }
 
 .reveal.visible {
@@ -624,7 +928,6 @@ body {
   transform: translateY(0);
 }
 
-/* Скрытие скроллбаров в горизонтальных фильтрах */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -633,21 +936,10 @@ body {
   scrollbar-width: none;
 }
 
-/* Модальные окна */
 .modal-backdrop {
-  background-color: rgba(14, 24, 34, 0.84);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-}
-
-/* Темная стилизация карты с теплым оттенком */
-.leaflet-container {
-  background: #162432 !important;
-  font-family: var(--font-sans) !important;
-}
-
-.leaflet-tile-pane {
-  filter: grayscale(85%) contrast(105%) brightness(92%);
+  background-color: rgba(14, 24, 34, 0.82);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 @media (prefers-reduced-motion: reduce) {

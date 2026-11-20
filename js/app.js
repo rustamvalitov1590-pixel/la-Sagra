@@ -1,11 +1,10 @@
 /**
  * La SAGRA — Italian Kitchen & Wine (г. Уральск, ул. Маншук Маметовой, 44, ЖК Central)
- * Интерактивная логика концепции «Palazzo & Fresco»
+ * Воздушная итальянская эстетика, плавная режиссура скролла, умная шапка и виджет 2ГИС
  */
 
 document.addEventListener('DOMContentLoaded', () => {
   const state = {
-    activeZoneId: ARCHITECTURAL_ZONES[0].id,
     activeCategory: 'all',
     menuView: 'grid', // 'grid' | 'list'
     searchQuery: '',
@@ -15,8 +14,10 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   // DOM-элементы
-  const zoneTabsContainer = document.getElementById('zone-tabs-container');
-  const zoneShowcase = document.getElementById('zone-showcase');
+  const walkStepsNav = document.getElementById('walk-steps-nav');
+  const zonesHorizontalRail = document.getElementById('zones-horizontal-rail');
+  const zonesWalkTrack = document.getElementById('zones-walk-track');
+
   const categoryContainer = document.getElementById('category-container');
   const menuGrid = document.getElementById('menu-grid');
   const emptyMenuState = document.getElementById('empty-menu-state');
@@ -26,7 +27,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const viewListBtn = document.getElementById('view-list-btn');
   const cartaHoverPreview = document.getElementById('carta-hover-preview');
   const cartaHoverImg = document.getElementById('carta-hover-img');
+
+  const headerWishlistBtn = document.getElementById('header-wishlist-btn');
   const wishlistCounter = document.getElementById('wishlist-counter');
+  const floatingTray = document.getElementById('floating-dinner-tray');
+  const trayCountBadge = document.getElementById('tray-count-badge');
+  const trayTotalText = document.getElementById('tray-total-text');
+  const scrollTopBtn = document.getElementById('scroll-top-btn');
+
   const galleryGrid = document.getElementById('gallery-grid');
   const galleryFilters = document.getElementById('gallery-filters');
   const reviewsGrid = document.getElementById('reviews-grid');
@@ -37,13 +45,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const confirmationModal = document.getElementById('confirmation-modal');
   const lightboxModal = document.getElementById('lightbox-modal');
 
-  // Форматирование цены в тенге
   function formatPrice(num) {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' ₸';
   }
 
   // =========================================================================
-  // 1. Статус работы ресторана (12:00 – 00:00, кухня до 23:00, UTC+5 Уральск)
+  // 1. Статус работы ресторана (UTC+5 Уральск)
   // =========================================================================
   function updateLiveStatus() {
     const statusEl = document.getElementById('live-open-status');
@@ -53,113 +60,204 @@ document.addEventListener('DOMContentLoaded', () => {
     const uralskHours = (utcHours + 5) % 24;
 
     if (uralskHours >= 12 && uralskHours < 23) {
-      statusEl.textContent = 'Открыто сейчас · 12:00–00:00 (кухня до 23:00)';
+      statusEl.textContent = 'Открыто до 00:00 · Кухня до 23:00';
     } else if (uralskHours >= 23 && uralskHours < 24) {
-      statusEl.textContent = 'Бар открыт до 00:00 · Кухня до 23:00';
+      statusEl.textContent = 'Бар открыт до 00:00';
     } else {
-      statusEl.textContent = 'Откроемся в 12:00 · Онлайн-бронь 24/7';
+      statusEl.textContent = 'Ежедневно 12:00 – 00:00';
     }
   }
 
   // =========================================================================
-  // 2. Интерактивный гид по 4 реальным залам (1 и 2 этаж)
+  // 2. ЭФФЕКТ №1: ВХОД ЧЕРЕЗ РАСШИРЯЮЩУЮСЯ РИМСКУЮ АРКУ (БЕЗ НАЛОЖЕНИЯ ТЕКСТА)
   // =========================================================================
-  function renderZones() {
-    if (!zoneTabsContainer || !zoneShowcase) return;
+  const heroTrack = document.getElementById('hero-portal-track');
+  const portalArchMask = document.getElementById('portal-arch-mask');
+  const portalArchImg = document.getElementById('portal-arch-inner-img');
+  const portalWordLeft = document.getElementById('portal-word-left');
+  const portalWordRight = document.getElementById('portal-word-right');
+  const portalInsideContent = document.getElementById('portal-inside-content');
+  const portalTopCaption = document.getElementById('portal-top-caption');
+  const portalScrollHint = document.getElementById('portal-scroll-hint');
 
-    zoneTabsContainer.innerHTML = ARCHITECTURAL_ZONES.map((z, idx) => {
-      const isActive = z.id === state.activeZoneId;
-      return `
-        <button type="button" data-zone-id="${z.id}" class="zone-tab-btn ${isActive ? 'active' : ''}">
-          <span class="zone-tab-floor font-mono-tech text-[10px] uppercase tracking-widest ${isActive ? 'text-[#C59B5F]' : 'text-[#3A1212]'} mb-1">
-            0${idx + 1} · ${z.floor}
-          </span>
-          <span class="font-serif text-xl font-semibold leading-snug mb-1">${z.name}</span>
-          <span class="zone-tab-sub text-xs ${isActive ? 'text-[#C8BEB0]' : 'text-[#52483E]'} line-clamp-1">${z.capacity}</span>
+  function updatePortalOnScroll() {
+    if (!heroTrack || !portalArchMask) return;
+    const rect = heroTrack.getBoundingClientRect();
+    const scrollable = Math.max(1, heroTrack.offsetHeight - window.innerHeight);
+    const rawProgress = -rect.top / scrollable;
+    const p = Math.min(1, Math.max(0, rawProgress));
+
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const startW = Math.min(320, vw * 0.74);
+    const startH = Math.min(430, vh * 0.52);
+    const startMarginTop = 40; // 2.5rem отступ вниз на старте, чтобы не задевать верхний текст
+
+    const expandP = Math.min(1, p / 0.76);
+    const eased = 1 - Math.pow(1 - expandP, 2.4);
+
+    const curW = startW + (vw - startW) * eased;
+    const curH = startH + (vh - startH) * eased;
+    const curMarginTop = startMarginTop * (1 - eased);
+    const topRadius = Math.round(250 * (1 - eased));
+    const bottomRadius = Math.round(28 * (1 - eased));
+
+    portalArchMask.style.width = `${curW}px`;
+    portalArchMask.style.height = `${curH}px`;
+    portalArchMask.style.marginTop = `${curMarginTop.toFixed(1)}px`;
+    portalArchMask.style.borderRadius = `${topRadius}px ${topRadius}px ${bottomRadius}px ${bottomRadius}px`;
+
+    if (portalArchImg) {
+      const imgScale = 1.15 - 0.15 * eased;
+      portalArchImg.style.transform = `scale(${imgScale.toFixed(3)})`;
+    }
+
+    const shiftX = eased * Math.min(340, vw * 0.28);
+    const fadeOut = Math.max(0, 1 - eased * 1.6);
+
+    if (portalWordLeft) {
+      portalWordLeft.style.transform = `translate3d(-${shiftX}px, -50%, 0)`;
+      portalWordLeft.style.opacity = fadeOut.toFixed(2);
+    }
+    if (portalWordRight) {
+      portalWordRight.style.transform = `translate3d(${shiftX}px, -50%, 0)`;
+      portalWordRight.style.opacity = fadeOut.toFixed(2);
+    }
+    if (portalTopCaption) {
+      portalTopCaption.style.opacity = fadeOut.toFixed(2);
+      portalTopCaption.style.transform = `translate3d(-50%, -${(eased * 28).toFixed(1)}px, 0)`;
+    }
+    if (portalScrollHint) {
+      portalScrollHint.style.opacity = fadeOut.toFixed(2);
+    }
+
+    if (portalInsideContent) {
+      if (eased >= 0.56) {
+        portalInsideContent.classList.add('revealed');
+      } else {
+        portalInsideContent.classList.remove('revealed');
+      }
+    }
+  }
+
+  // =========================================================================
+  // 3. ЭФФЕКТ №2: ГОРИЗОНТАЛЬНАЯ ПРОГУЛКА ПО 4 ЗАЛАМ + ШИРОКИЕ 2-СТРОЧНЫЕ ТАБЫ
+  // =========================================================================
+  const ITALIAN_WATERMARKS = [
+    'Le Volte',
+    'Il Camino',
+    'Il Forno',
+    'La Galleria'
+  ];
+
+  function renderHorizontalZonesWalk() {
+    if (!zonesHorizontalRail) return;
+
+    // Широкие табы строго в 2 строки
+    if (walkStepsNav) {
+      walkStepsNav.innerHTML = ARCHITECTURAL_ZONES.map((z, idx) => `
+        <button type="button" data-walk-step="${idx}" class="walk-step-btn ${idx === 0 ? 'active' : ''}">
+          <span class="walk-step-line1">${z.floor} · ${z.capacity}</span>
+          <span class="walk-step-line2">${z.name}</span>
         </button>
+      `).join('');
+    }
+
+    zonesHorizontalRail.innerHTML = ARCHITECTURAL_ZONES.map((z, idx) => {
+      const zoneSelectValue = `${z.floor} — ${z.name}`;
+      return `
+        <article class="zone-walk-panel" data-zone-panel="${idx}">
+          <div class="zone-bg-watermark" data-zone-watermark="${idx}">
+            ${ITALIAN_WATERMARKS[idx] || z.name}
+          </div>
+
+          <div class="max-w-[1340px] mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center relative z-10">
+            
+            <div class="lg:col-span-5 space-y-5">
+              <div class="inline-flex items-center gap-3 text-sm text-[#3A1212]">
+                <span class="font-serif italic text-xl">${z.floor}</span>
+                <span class="text-[#181412]/25">·</span>
+                <span class="text-[#564C42]">${z.capacity}</span>
+              </div>
+
+              <h3 class="font-serif text-4xl sm:text-5xl text-[#181412] leading-[1.06]">
+                ${z.name}
+              </h3>
+
+              <p class="font-serif italic text-xl text-[#3A1212]">
+                ${z.subtitle}
+              </p>
+
+              <p class="text-base text-[#564C42] leading-relaxed">
+                ${z.atmosphere}
+              </p>
+
+              <div class="flex flex-wrap gap-2 pt-1">
+                ${z.features.map(f => `
+                  <span class="px-4 py-1.5 rounded-full bg-[#FAF7F2] text-xs text-[#564C42] shadow-sm">${f}</span>
+                `).join('')}
+              </div>
+
+              <div class="pt-3">
+                <button type="button" data-book-specific-zone="${zoneSelectValue}" class="btn-bordeaux">
+                  <span>Выбрать стол в этом зале</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="lg:col-span-7 relative">
+              <div class="grid grid-cols-12 gap-6 items-center w-full">
+                
+                <div class="col-span-12 sm:col-span-7 arch-frame aspect-[4/5] bg-[#162432] cursor-pointer group" data-open-photo="${z.mainPhoto}" data-photo-title="${z.name}" data-photo-sub="${z.subtitle}">
+                  <img src="${z.mainPhoto}" alt="${z.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                </div>
+
+                <div class="col-span-12 sm:col-span-5 flex sm:flex-col gap-6" data-zone-fg="${idx}">
+                  <div class="flex-1 aspect-[4/3] soft-photo-card cursor-pointer group" data-open-photo="${z.secondaryPhoto}" data-photo-title="${z.name}" data-photo-sub="${z.atmosphere}">
+                    <img src="${z.secondaryPhoto}" alt="${z.name} ракурс" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                  </div>
+
+                  <div class="flex-1 aspect-[4/3] soft-photo-card cursor-pointer group relative" data-open-photo="${z.detailPhoto}" data-photo-title="${z.name}" data-photo-sub="${z.subtitle}">
+                    <img src="${z.detailPhoto}" alt="${z.name} деталь" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </article>
       `;
     }).join('');
 
-    zoneTabsContainer.querySelectorAll('[data-zone-id]').forEach(btn => {
+    if (walkStepsNav) {
+      walkStepsNav.querySelectorAll('[data-walk-step]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const stepIdx = parseInt(btn.getAttribute('data-walk-step'), 10);
+          if (window.innerWidth >= 1024 && zonesWalkTrack) {
+            const trackTop = zonesWalkTrack.getBoundingClientRect().top + window.scrollY;
+            const scrollable = zonesWalkTrack.offsetHeight - window.innerHeight;
+            const targetScroll = trackTop + (scrollable * (stepIdx / Math.max(1, ARCHITECTURAL_ZONES.length - 1)));
+            window.scrollTo({ top: targetScroll, behavior: 'smooth' });
+          } else {
+            const panel = zonesHorizontalRail.querySelector(`[data-zone-panel="${stepIdx}"]`);
+            if (panel) panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
+      });
+    }
+
+    zonesHorizontalRail.querySelectorAll('[data-book-specific-zone]').forEach(btn => {
       btn.addEventListener('click', () => {
-        state.activeZoneId = btn.getAttribute('data-zone-id');
-        renderZones();
+        openReservationModal({ zone: btn.getAttribute('data-book-specific-zone') });
       });
     });
 
-    const activeZone = ARCHITECTURAL_ZONES.find(z => z.id === state.activeZoneId) || ARCHITECTURAL_ZONES[0];
-    const zoneSelectValue = `${activeZone.floor} — ${activeZone.name}`;
-
-    zoneShowcase.innerHTML = `
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-        <!-- Левая часть: Описание зала и кнопка выбора -->
-        <div class="lg:col-span-5 space-y-5">
-          <div class="inline-flex items-center gap-2 px-3 py-1 bg-[#3A1212] text-[#F5F0E6] font-mono-tech text-[11px] uppercase tracking-wider">
-            <span>${activeZone.floor}</span>
-            <span>·</span>
-            <span>${activeZone.capacity}</span>
-          </div>
-
-          <h3 class="font-serif text-3xl sm:text-4xl text-[#181412] leading-tight">${activeZone.name}</h3>
-          <p class="font-serif italic text-lg text-[#3A1212]">${activeZone.subtitle}</p>
-          <p class="text-sm sm:text-base text-[#52483E] leading-relaxed">${activeZone.atmosphere}</p>
-
-          <div class="pt-2 space-y-2 border-t border-[#181412]/15">
-            <p class="font-mono-tech text-[11px] uppercase tracking-wider text-[#52483E]">Особенности посадки:</p>
-            <div class="flex flex-wrap gap-2">
-              ${activeZone.features.map(f => `
-                <span class="px-3 py-1.5 bg-[#F3EFE6] border border-[#181412]/15 text-xs text-[#181412]">${f}</span>
-              `).join('')}
-            </div>
-          </div>
-
-          <div class="pt-3 flex flex-wrap gap-3">
-            <button type="button" data-book-specific-zone="${zoneSelectValue}" class="btn-bordeaux">
-              <span>Забронировать стол в этом зале</span>
-            </button>
-            <a href="#gallery" class="btn-outline-dark">
-              <span>Все фото интерьера</span>
-            </a>
-          </div>
-        </div>
-
-        <!-- Правая часть: 3 реальных фото этой зоны из 2ГИС -->
-        <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-12 gap-4">
-          <div class="sm:col-span-7 aspect-[4/5] overflow-hidden border border-[#181412]/20 relative group cursor-pointer" data-open-photo="${activeZone.mainPhoto}" data-photo-title="${activeZone.name}" data-photo-sub="${activeZone.subtitle}">
-            <img src="${activeZone.mainPhoto}" alt="${activeZone.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-            <span class="absolute bottom-2.5 left-2.5 px-2.5 py-1 bg-[#181412]/85 text-[#F5F0E6] font-mono-tech text-[10px]">
-              ${activeZone.floor} · Главный ракурс
-            </span>
-          </div>
-          <div class="sm:col-span-5 flex flex-col gap-4">
-            <div class="aspect-[4/3] overflow-hidden border border-[#181412]/20 relative group cursor-pointer" data-open-photo="${activeZone.secondaryPhoto}" data-photo-title="${activeZone.name}" data-photo-sub="${activeZone.atmosphere}">
-              <img src="${activeZone.secondaryPhoto}" alt="${activeZone.name} ракурс 2" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-            </div>
-            <div class="aspect-[4/3] overflow-hidden border border-[#181412]/20 relative group cursor-pointer" data-open-photo="${activeZone.detailPhoto}" data-photo-title="${activeZone.name}" data-photo-sub="${activeZone.subtitle}">
-              <img src="${activeZone.detailPhoto}" alt="${activeZone.name} деталь" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-              <span class="absolute bottom-2 right-2 px-2 py-0.5 bg-[#181412]/80 text-[#C59B5F] font-mono-tech text-[10px]">
-                Увеличить фото ↗
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-    `;
-
-    // Клик по кнопке бронирования конкретного зала
-    zoneShowcase.querySelectorAll('[data-book-specific-zone]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const zoneName = btn.getAttribute('data-book-specific-zone');
-        openReservationModal({ zone: zoneName });
-      });
-    });
-
-    // Клик по фотографиям зоны для открытия в лайтбоксе
-    zoneShowcase.querySelectorAll('[data-open-photo]').forEach(el => {
+    zonesHorizontalRail.querySelectorAll('[data-open-photo]').forEach(el => {
       el.addEventListener('click', () => {
         openLightbox({
           image: el.getAttribute('data-open-photo'),
-          zoneLabel: activeZone.floor,
+          zoneLabel: 'Интерьер La SAGRA',
           title: el.getAttribute('data-photo-title'),
           subtitle: el.getAttribute('data-photo-sub')
         });
@@ -167,20 +265,52 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  function updateHorizontalWalkOnScroll() {
+    if (!zonesWalkTrack || !zonesHorizontalRail) return;
+    if (window.innerWidth < 1024) {
+      zonesHorizontalRail.style.transform = 'none';
+      return;
+    }
+
+    const rect = zonesWalkTrack.getBoundingClientRect();
+    const scrollable = Math.max(1, zonesWalkTrack.offsetHeight - window.innerHeight);
+    const rawP = -rect.top / scrollable;
+    const p = Math.min(1, Math.max(0, rawP));
+
+    const totalPanels = ARCHITECTURAL_ZONES.length;
+    const maxShiftVw = (totalPanels - 1) * 100;
+    const currentShiftVw = p * maxShiftVw;
+
+    zonesHorizontalRail.style.transform = `translate3d(-${currentShiftVw.toFixed(2)}vw, 0, 0)`;
+
+    const activeIdx = Math.min(totalPanels - 1, Math.round(p * (totalPanels - 1)));
+    if (walkStepsNav) {
+      walkStepsNav.querySelectorAll('[data-walk-step]').forEach((btn, idx) => {
+        btn.classList.toggle('active', idx === activeIdx);
+      });
+    }
+
+    zonesHorizontalRail.querySelectorAll('[data-zone-watermark]').forEach((wm, idx) => {
+      const localOffset = (p * (totalPanels - 1) - idx) * 130;
+      wm.style.transform = `translate3d(${localOffset.toFixed(1)}px, 0, 0)`;
+    });
+
+    zonesHorizontalRail.querySelectorAll('[data-zone-fg]').forEach((fg, idx) => {
+      const localOffset = (p * (totalPanels - 1) - idx) * -40;
+      fg.style.transform = `translate3d(0, ${localOffset.toFixed(1)}px, 0)`;
+    });
+  }
+
   // =========================================================================
-  // 3. Иллюстрированное меню La Carta Illustrata
+  // 4. НАКРЫТЫЙ ИТАЛЬЯНСКИЙ СТОЛ (АСИММЕТРИЧНОЕ МЕНЮ С ВОЗДУХОМ)
   // =========================================================================
   function renderCategories() {
     if (!categoryContainer) return;
     categoryContainer.innerHTML = MENU_CATEGORIES.map(cat => {
       const isActive = cat.id === state.activeCategory;
-      const count = cat.id === 'all'
-        ? MENU_ITEMS.length
-        : MENU_ITEMS.filter(i => i.category === cat.id).length;
       return `
         <button type="button" data-cat-id="${cat.id}" class="category-pill ${isActive ? 'active' : ''}">
           <span>${cat.name}</span>
-          <span class="ml-1.5 opacity-60 font-mono-tech text-[11px]">(${count})</span>
         </button>
       `;
     }).join('');
@@ -224,93 +354,100 @@ document.addEventListener('DOMContentLoaded', () => {
     if (emptyMenuState) emptyMenuState.classList.add('hidden');
 
     if (state.menuView === 'grid') {
-      menuGrid.className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6';
-      menuGrid.innerHTML = items.map(dish => {
+      menuGrid.className = 'grid grid-cols-1 lg:grid-cols-12 gap-y-16 lg:gap-x-14 lg:gap-y-24 items-start';
+      menuGrid.innerHTML = items.map((dish, idx) => {
         const isSelected = state.selectedDishes.has(dish.id);
+        const pattern = idx % 3;
+        const colClass = pattern === 0
+          ? 'lg:col-span-7'
+          : pattern === 1
+          ? 'lg:col-span-5 lg:mt-20'
+          : 'lg:col-span-6 lg:col-start-4';
+
+        const imgAspect = pattern === 0 ? 'aspect-[16/10]' : 'aspect-[4/3]';
+
         return `
-          <article class="dish-card ceramic-rim-top justify-between" data-dish-card="${dish.id}">
-            <div>
-              <div class="dish-img-wrap cursor-pointer" data-open-dish="${dish.id}">
-                <img src="${dish.image}" alt="${dish.title}" loading="lazy">
-                ${dish.note ? `<span class="absolute top-3 left-3 px-2.5 py-1 bg-[#181412]/85 text-[#F5F0E6] font-mono-tech text-[10px] uppercase tracking-wider">${dish.note}</span>` : ''}
-                <span class="absolute bottom-2.5 right-2.5 px-2.5 py-1 bg-[#FAF7F2]/95 text-[#181412] font-mono-tech text-[11px]">
-                  ${dish.weight}
-                </span>
-              </div>
-
-              <div class="p-5 sm:p-6 space-y-3">
-                <div class="flex items-start justify-between gap-3">
-                  <div>
-                    <p class="font-serif italic text-sm text-[#3A1212]">${dish.titleIt}</p>
-                    <h3 class="font-serif text-2xl font-semibold text-[#181412] leading-snug cursor-pointer hover:text-[#3A1212] transition-colors" data-open-dish="${dish.id}">
-                      ${dish.title}
-                    </h3>
-                  </div>
-                  <div class="font-serif text-2xl font-semibold text-[#3A1212] tabular-nums whitespace-nowrap">
-                    ${formatPrice(dish.price)}
-                  </div>
-                </div>
-
-                ${dish.termExplain ? `
-                  <div class="term-glossary-box">
-                    <strong class="text-[#1E3F66] font-semibold">Справка:</strong> ${dish.termExplain}
-                  </div>
-                ` : ''}
-
-                <p class="text-xs sm:text-sm text-[#52483E] leading-relaxed line-clamp-3">
-                  ${dish.description}
-                </p>
-              </div>
+          <article class="editorial-dish-card ${colClass}" data-dish-card="${dish.id}">
+            <div class="dish-photo-vessel ${imgAspect} cursor-pointer group" data-open-dish="${dish.id}">
+              <img src="${dish.image}" alt="${dish.title}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+              ${dish.note ? `<span class="absolute top-4 left-4 px-3.5 py-1.5 rounded-full bg-[#181412]/75 backdrop-blur-md text-[#F5F0E6] text-xs">${dish.note}</span>` : ''}
+              <span class="absolute bottom-4 right-4 px-3.5 py-1 rounded-full bg-[#FAF7F2]/90 backdrop-blur-md text-[#181412] text-xs tabular-nums">
+                ${dish.weight}
+              </span>
             </div>
 
-            <div class="px-5 sm:px-6 py-4 border-t border-[#181412]/10 bg-[#F3EFE6]/50 flex items-center justify-between gap-3">
-              <button type="button" data-open-dish="${dish.id}" class="font-mono-tech text-[11px] uppercase tracking-wider text-[#52483E] hover:text-[#181412] underline underline-offset-4">
-                Состав и вино
-              </button>
+            <div class="pt-6 px-1 space-y-3">
+              <div class="flex items-baseline justify-between gap-4">
+                <div>
+                  <p class="font-serif italic text-lg text-[#3A1212]">${dish.titleIt}</p>
+                  <h3 class="font-serif text-2xl sm:text-3xl font-semibold text-[#181412] leading-snug cursor-pointer hover:text-[#3A1212] transition-colors" data-open-dish="${dish.id}">
+                    ${dish.title}
+                  </h3>
+                </div>
+                <div class="font-serif text-2xl sm:text-3xl font-semibold text-[#3A1212] tabular-nums whitespace-nowrap">
+                  ${formatPrice(dish.price)}
+                </div>
+              </div>
 
-              <button type="button" data-toggle-wish="${dish.id}" class="px-3.5 py-2 font-mono-tech text-[11px] uppercase tracking-wider border transition-colors ${
-                isSelected
-                  ? 'bg-[#3A1212] text-[#F5F0E6] border-[#3A1212]'
-                  : 'bg-[#FAF7F2] text-[#181412] border-[#181412]/25 hover:border-[#3A1212]'
-              }">
-                ${isSelected ? '✓ В предзаказе' : '+ В предзаказ'}
-              </button>
+              ${dish.termExplain ? `
+                <div class="term-glossary-box">
+                  <strong class="text-[#1E3F66] font-medium">О блюде:</strong> ${dish.termExplain}
+                </div>
+              ` : ''}
+
+              <p class="text-sm sm:text-base text-[#564C42] leading-relaxed">
+                ${dish.description}
+              </p>
+
+              <div class="pt-3 flex items-center justify-between gap-4">
+                <button type="button" data-open-dish="${dish.id}" class="text-xs font-medium text-[#564C42] hover:text-[#181412] underline underline-offset-4">
+                  Состав и винная пара
+                </button>
+
+                <button type="button" data-toggle-wish="${dish.id}" class="px-5 py-2.5 rounded-full text-xs font-medium transition-all ${
+                  isSelected
+                    ? 'bg-[#3A1212] text-[#F5F0E6] shadow-md'
+                    : 'bg-[#FAF7F2] text-[#181412] hover:bg-[#3A1212] hover:text-[#F5F0E6] shadow-sm'
+                }">
+                  ${isSelected ? '✓ В предзаказе' : '+ Подать к столу'}
+                </button>
+              </div>
             </div>
           </article>
         `;
       }).join('');
+
+      bindEditorialCardTilt();
     } else {
-      // Печатный режим La Carta
-      menuGrid.className = 'bg-[#FAF7F2] border border-[#181412]/20 p-4 sm:p-8 divide-y divide-[#181412]/10';
+      menuGrid.className = 'bg-[#FAF7F2] rounded-[32px] p-6 sm:p-10 shadow-sm divide-y divide-[#181412]/10';
       menuGrid.innerHTML = items.map(dish => {
         const isSelected = state.selectedDishes.has(dish.id);
         return `
           <div class="carta-row" data-dish-row="${dish.id}" data-preview-img="${dish.image}">
             <div class="flex-1 pr-4" data-open-dish="${dish.id}">
-              <div class="flex items-baseline gap-2">
-                <h3 class="font-serif text-xl sm:text-2xl font-semibold text-[#181412]">${dish.title}</h3>
-                <span class="font-serif italic text-sm text-[#3A1212]">(${dish.titleIt})</span>
+              <div class="flex flex-wrap items-baseline gap-2.5">
+                <h3 class="font-serif text-2xl font-semibold text-[#181412]">${dish.title}</h3>
+                <span class="font-serif italic text-base text-[#3A1212]">${dish.titleIt}</span>
               </div>
-              <p class="text-xs text-[#52483E] mt-1">${dish.description}</p>
-              ${dish.termExplain ? `<p class="text-[11px] text-[#1E3F66] mt-1 italic">${dish.termExplain}</p>` : ''}
+              <p class="text-sm text-[#564C42] mt-1">${dish.description}</p>
+              ${dish.termExplain ? `<p class="text-xs text-[#1E3F66] mt-1.5 italic">${dish.termExplain}</p>` : ''}
             </div>
 
-            <div class="flex items-center gap-4 self-end md:self-center">
-              <span class="font-mono-tech text-xs text-[#7D7165] tabular-nums">${dish.weight}</span>
+            <div class="flex items-center gap-5 self-end md:self-center">
+              <span class="text-xs text-[#84786B] tabular-nums">${dish.weight}</span>
               <span class="font-serif text-2xl font-semibold text-[#3A1212] tabular-nums whitespace-nowrap">${formatPrice(dish.price)}</span>
-              <button type="button" data-toggle-wish="${dish.id}" class="px-3 py-1.5 font-mono-tech text-[11px] uppercase tracking-wider border ${
+              <button type="button" data-toggle-wish="${dish.id}" class="px-4 py-2 rounded-full text-xs font-medium transition-all ${
                 isSelected
-                  ? 'bg-[#3A1212] text-[#F5F0E6] border-[#3A1212]'
-                  : 'bg-white text-[#181412] border-[#181412]/25 hover:border-[#3A1212]'
+                  ? 'bg-[#3A1212] text-[#F5F0E6]'
+                  : 'bg-[#F3EFE6] text-[#181412] hover:bg-[#3A1212] hover:text-[#F5F0E6]'
               }">
-                ${isSelected ? '✓ Выбрано' : '+ Заказать'}
+                ${isSelected ? '✓ Выбрано' : '+ К столу'}
               </button>
             </div>
           </div>
         `;
       }).join('');
 
-      // Наведение курсора для превью фото в режиме печатного листа
       menuGrid.querySelectorAll('[data-dish-row]').forEach(row => {
         row.addEventListener('mouseenter', () => {
           const imgUrl = row.getAttribute('data-preview-img');
@@ -331,17 +468,29 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // Обработчики открытия модалки блюда и добавления в предзаказ
     menuGrid.querySelectorAll('[data-open-dish]').forEach(el => {
-      el.addEventListener('click', () => {
-        openDishModal(el.getAttribute('data-open-dish'));
-      });
+      el.addEventListener('click', () => openDishModal(el.getAttribute('data-open-dish')));
     });
 
     menuGrid.querySelectorAll('[data-toggle-wish]').forEach(btn => {
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
         toggleDishWish(btn.getAttribute('data-toggle-wish'));
+      });
+    });
+  }
+
+  function bindEditorialCardTilt() {
+    if (window.innerWidth < 1024) return;
+    document.querySelectorAll('.editorial-dish-card').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        card.style.transform = `perspective(1000px) rotateX(${(-y * 2.5).toFixed(2)}deg) rotateY(${(x * 2.5).toFixed(2)}deg) translateY(-4px)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)';
       });
     });
   }
@@ -358,33 +507,51 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function updateWishlistUI() {
     const count = state.selectedDishes.size;
-    if (wishlistCounter) {
-      wishlistCounter.textContent = count.toString();
+    if (wishlistCounter) wishlistCounter.textContent = count.toString();
+
+    if (headerWishlistBtn) {
+      if (count > 0) {
+        headerWishlistBtn.classList.remove('hidden');
+        headerWishlistBtn.classList.add('inline-flex');
+      } else {
+        headerWishlistBtn.classList.add('hidden');
+        headerWishlistBtn.classList.remove('inline-flex');
+      }
     }
 
     const selectedItems = MENU_ITEMS.filter(d => state.selectedDishes.has(d.id));
     const totalSum = selectedItems.reduce((acc, d) => acc + d.price, 0);
 
+    if (floatingTray) {
+      if (count > 0) {
+        floatingTray.classList.add('visible');
+        if (trayCountBadge) trayCountBadge.textContent = count.toString();
+        if (trayTotalText) trayTotalText.textContent = `${formatPrice(totalSum)} · ${count} блюд(а)`;
+      } else {
+        floatingTray.classList.remove('visible');
+      }
+    }
+
     const inlineList = document.getElementById('inline-selected-dishes-list');
     const modalList = document.getElementById('modal-selected-dishes-list');
 
     if (selectedItems.length === 0) {
-      const emptyHtml = 'Блюда еще не выбраны. Отметьте позиции в меню выше, чтобы мы приготовили их к вашему приходу или доставили.';
+      const emptyHtml = 'Блюда еще не выбраны. Отметьте позиции в меню выше, чтобы мы подали их к вашему приходу.';
       if (inlineList) inlineList.innerHTML = emptyHtml;
-      if (modalList) modalList.innerHTML = 'Не выбраны (можно добавить в разделе Меню)';
+      if (modalList) modalList.innerHTML = 'Не выбраны (можно отметить в меню)';
       return;
     }
 
     const pillsHtml = `
-      <div class="flex flex-wrap gap-1.5 mb-2">
+      <div class="flex flex-wrap gap-2 mb-2.5">
         ${selectedItems.map(item => `
-          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-[#FAF7F2] border border-[#181412]/20 text-xs text-[#181412]">
+          <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FAF7F2] text-xs text-[#181412] shadow-sm">
             <span>${item.title} (${formatPrice(item.price)})</span>
             <button type="button" data-remove-wish="${item.id}" class="text-[#3A1212] font-bold hover:opacity-70" title="Удалить">×</button>
           </span>
         `).join('')}
       </div>
-      <div class="font-mono-tech text-xs text-[#3A1212] font-semibold">
+      <div class="text-xs text-[#3A1212] font-semibold tabular-nums">
         Итого по предзаказу: ${formatPrice(totalSum)} (${selectedItems.length} поз.)
       </div>
     `;
@@ -393,14 +560,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (modalList) modalList.innerHTML = pillsHtml;
 
     document.querySelectorAll('[data-remove-wish]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        toggleDishWish(btn.getAttribute('data-remove-wish'));
-      });
+      btn.addEventListener('click', () => toggleDishWish(btn.getAttribute('data-remove-wish')));
     });
   }
 
   // =========================================================================
-  // 4. Модальное окно карточки блюда
+  // 5. Модальное окно блюда
   // =========================================================================
   function openDishModal(dishId) {
     const dish = MENU_ITEMS.find(d => d.id === dishId);
@@ -421,7 +586,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (termBox) {
       if (dish.termExplain) {
         termBox.classList.remove('hidden');
-        termBox.innerHTML = `<strong class="text-[#1E3F66]">Гастрономическая справка:</strong> ${dish.termExplain}`;
+        termBox.innerHTML = `<strong class="text-[#1E3F66]">О блюде:</strong> ${dish.termExplain}`;
       } else {
         termBox.classList.add('hidden');
       }
@@ -430,14 +595,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const ingContainer = document.getElementById('modal-dish-ingredients');
     if (ingContainer) {
       ingContainer.innerHTML = dish.ingredients.map(ing => `
-        <span class="px-2.5 py-1 bg-[#F3EFE6] border border-[#181412]/15 text-xs text-[#181412]">${ing}</span>
+        <span class="px-3.5 py-1.5 rounded-full bg-[#F3EFE6] text-xs text-[#181412]">${ing}</span>
       `).join('');
     }
 
     const addBtn = document.getElementById('modal-dish-add-btn');
     if (addBtn) {
       const isSelected = state.selectedDishes.has(dish.id);
-      addBtn.textContent = isSelected ? '✓ Уже в предзаказе (убрать)' : '+ Добавить в предзаказ / доставку';
+      addBtn.textContent = isSelected ? '✓ Уже в предзаказе (убрать)' : '+ Подать к столу / в предзаказ';
       addBtn.onclick = () => {
         toggleDishWish(dish.id);
         openDishModal(dish.id);
@@ -460,7 +625,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // =========================================================================
-  // 5. Архив реальных фотографий 2ГИС и Лайтбокс
+  // 6. Фотогалерея 2ГИС и Отзывы гостей
   // =========================================================================
   function renderGallery() {
     if (!galleryGrid) return;
@@ -478,10 +643,10 @@ document.addEventListener('DOMContentLoaded', () => {
       return `
         <figure class="gallery-item ${colSpan} group" data-gallery-idx="${item.id}">
           <img src="${item.image}" alt="${item.title}" loading="lazy">
-          <figcaption class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#0E1822]/95 via-[#0E1822]/50 to-transparent p-5 pt-12">
-            <span class="font-mono-tech text-[10px] uppercase tracking-widest text-[#C59B5F] block mb-1">${item.zoneLabel}</span>
-            <h3 class="font-serif text-xl sm:text-2xl text-[#F5F0E6] leading-snug">${item.title}</h3>
-            <p class="text-xs text-[#C8BEB0] mt-1 line-clamp-2">${item.subtitle}</p>
+          <figcaption class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#0E1822]/90 via-[#0E1822]/40 to-transparent p-6 pt-14">
+            <span class="font-serif italic text-base text-[#C59B5F] block mb-0.5">${item.zoneLabel}</span>
+            <h3 class="font-serif text-2xl text-[#F5F0E6] leading-snug">${item.title}</h3>
+            <p class="text-xs text-[#CFC5B7] mt-1 line-clamp-2">${item.subtitle}</p>
           </figcaption>
         </figure>
       `;
@@ -500,46 +665,43 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!lightboxModal) return;
     document.getElementById('lightbox-image').src = item.image;
     document.getElementById('lightbox-image').alt = item.title;
-    document.getElementById('lightbox-zone').textContent = item.zoneLabel || 'La SAGRA · 2ГИС';
+    document.getElementById('lightbox-zone').textContent = item.zoneLabel || 'La SAGRA';
     document.getElementById('lightbox-title').textContent = item.title;
     document.getElementById('lightbox-subtitle').textContent = item.subtitle || '';
     lightboxModal.classList.remove('hidden');
     lightboxModal.classList.add('flex');
   }
 
-  // =========================================================================
-  // 6. Реальные отзывы гостей из 2ГИС
-  // =========================================================================
   function renderReviews() {
     if (!reviewsGrid) return;
     reviewsGrid.innerHTML = REVIEWS_DATA.map(rev => `
-      <article class="bg-[#FAF7F2] border border-[#181412]/15 p-6 sm:p-8 flex flex-col justify-between">
+      <article class="bg-[#FAF7F2] rounded-[28px] p-8 sm:p-10 shadow-sm flex flex-col justify-between">
         <div>
-          <div class="flex items-center justify-between gap-3 pb-4 mb-4 border-b border-[#181412]/10">
+          <div class="flex items-center justify-between gap-3 pb-5 mb-5 border-b border-[#181412]/10">
             <div>
               <h3 class="font-serif text-2xl font-semibold text-[#181412]">${rev.author}</h3>
-              <p class="font-mono-tech text-[11px] text-[#52483E]">${rev.date}</p>
+              <p class="text-xs text-[#564C42] mt-0.5">${rev.date}</p>
             </div>
-            <span class="px-2.5 py-1 bg-[#3A1212] text-[#F5F0E6] font-mono-tech text-xs">
+            <span class="px-3.5 py-1 rounded-full bg-[#3A1212] text-[#F5F0E6] text-xs tabular-nums">
               5.0 ★
             </span>
           </div>
 
-          <p class="text-sm sm:text-base text-[#181412] leading-relaxed mb-5">
+          <p class="text-base text-[#181412] leading-relaxed mb-6">
             «${rev.text}»
           </p>
         </div>
 
-        <div class="pt-3 border-t border-[#181412]/10 flex flex-wrap items-center justify-between gap-2 text-xs font-mono-tech">
-          <span class="text-[#3A1212] font-medium">${rev.tag}</span>
-          <span class="text-[#52483E]">${rev.staffMention}</span>
+        <div class="pt-4 border-t border-[#181412]/10 flex flex-wrap items-center justify-between gap-2 text-xs">
+          <span class="font-serif italic text-base text-[#3A1212]">${rev.tag}</span>
+          <span class="text-[#564C42]">${rev.staffMention}</span>
         </div>
       </article>
     `).join('');
   }
 
   // =========================================================================
-  // 7. Бронирование стола, предзаказ и отправка в WhatsApp (+7 778 455-13-42)
+  // 7. Бронирование стола и отправка в WhatsApp (+7 778 455-13-42)
   // =========================================================================
   function initBookingDates() {
     const today = new Date().toISOString().split('T')[0];
@@ -617,12 +779,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (confirmWaLink) confirmWaLink.href = waUrl;
     if (confirmDetailsEl) {
       confirmDetailsEl.innerHTML = `
-        <div class="flex justify-between py-1 border-b border-[#181412]/10"><span class="text-[#52483E]">Формат:</span><strong class="text-right">${visitType}</strong></div>
-        <div class="flex justify-between py-1 border-b border-[#181412]/10"><span class="text-[#52483E]">Гость:</span><strong>${name} (${phone})</strong></div>
-        <div class="flex justify-between py-1 border-b border-[#181412]/10"><span class="text-[#52483E]">Дата и время:</span><strong class="font-mono-tech">${date} · ${time}</strong></div>
-        <div class="flex justify-between py-1 border-b border-[#181412]/10"><span class="text-[#52483E]">Персон:</span><strong>${guests}</strong></div>
-        <div class="flex justify-between py-1 border-b border-[#181412]/10"><span class="text-[#52483E]">Зал:</span><strong class="text-right">${zone}</strong></div>
-        ${selectedItems.length > 0 ? `<div class="pt-2"><span class="text-[#3A1212] font-semibold block mb-1">Предзаказ (${formatPrice(totalSum)}):</span><p class="text-xs text-[#52483E]">${selectedItems.map(d => d.title).join(', ')}</p></div>` : ''}
+        <div class="flex justify-between py-1.5 border-b border-[#181412]/10"><span class="text-[#564C42]">Формат:</span><strong class="text-right">${visitType}</strong></div>
+        <div class="flex justify-between py-1.5 border-b border-[#181412]/10"><span class="text-[#564C42]">Гость:</span><strong>${name} (${phone})</strong></div>
+        <div class="flex justify-between py-1.5 border-b border-[#181412]/10"><span class="text-[#564C42]">Дата и время:</span><strong class="tabular-nums">${date} · ${time}</strong></div>
+        <div class="flex justify-between py-1.5 border-b border-[#181412]/10"><span class="text-[#564C42]">Персон:</span><strong>${guests}</strong></div>
+        <div class="flex justify-between py-1.5 border-b border-[#181412]/10"><span class="text-[#564C42]">Зал:</span><strong class="text-right">${zone}</strong></div>
+        ${selectedItems.length > 0 ? `<div class="pt-2"><span class="text-[#3A1212] font-semibold block mb-1">Предзаказ (${formatPrice(totalSum)}):</span><p class="text-xs text-[#564C42]">${selectedItems.map(d => d.title).join(', ')}</p></div>` : ''}
       `;
     }
 
@@ -634,61 +796,123 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // =========================================================================
-  // 8. Карта Leaflet (ЖК Central, ул. Маншук Маметовой, 44)
+  // 8. Единый цикл скролл-драйверов + Умная шапка (скрытие вниз / показ вверх)
   // =========================================================================
-  function initMap() {
-    const mapEl = document.getElementById('restaurant-map');
-    if (!mapEl || typeof L === 'undefined') return;
+  function initChoreographyLoop() {
+    const header = document.getElementById('main-header');
+    let lastScrollY = window.scrollY;
+    let ticking = false;
 
-    const coords = RESTAURANT_INFO.coords;
-    const map = L.map('restaurant-map', {
-      scrollWheelZoom: false
-    }).setView(coords, 16);
+    function onFrame() {
+      const currentY = window.scrollY;
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap'
-    }).addTo(map);
+      updatePortalOnScroll();
+      updateHorizontalWalkOnScroll();
 
-    const pinIcon = L.divIcon({
-      className: 'custom-pin',
-      html: `<div style="width:28px;height:28px;background:#3A1212;border:2px solid #C59B5F;border-radius:50%;box-shadow:0 4px 14px rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;color:#F5F0E6;font-family:serif;font-style:italic;font-size:13px;">La</div>`,
-      iconSize: [28, 28],
-      iconAnchor: [14, 14]
+      // Умная шапка: исчезает при скролле вниз, появляется при скролле вверх
+      if (header) {
+        header.classList.toggle('header-scrolled', currentY > 40);
+
+        if (currentY > lastScrollY + 5 && currentY > 100) {
+          header.classList.add('header-hidden');
+        } else if (currentY < lastScrollY - 5 || currentY <= 80) {
+          header.classList.remove('header-hidden');
+        }
+      }
+
+      // Кнопка возврата наверх
+      if (scrollTopBtn) {
+        scrollTopBtn.classList.toggle('visible', currentY > 450);
+      }
+
+      if (window.innerWidth >= 768) {
+        document.querySelectorAll('[data-parallax-speed]').forEach(el => {
+          const speed = parseFloat(el.getAttribute('data-parallax-speed') || '0');
+          const r = el.getBoundingClientRect();
+          const centerOffset = (r.top + r.height / 2) - window.innerHeight / 2;
+          el.style.transform = `translate3d(0, ${(centerOffset * speed).toFixed(1)}px, 0)`;
+        });
+      }
+
+      lastScrollY = Math.max(0, currentY);
+      ticking = false;
+    }
+
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        window.requestAnimationFrame(onFrame);
+        ticking = true;
+      }
+    }, { passive: true });
+
+    window.addEventListener('resize', () => {
+      updatePortalOnScroll();
+      updateHorizontalWalkOnScroll();
     });
 
-    L.marker(coords, { icon: pinIcon })
-      .addTo(map)
-      .bindPopup(`
-        <div style="font-family:'Plus Jakarta Sans',sans-serif;padding:4px;">
-          <strong style="font-size:14px;color:#3A1212;">La SAGRA — Italian Kitchen &amp; Wine</strong><br>
-          <span style="font-size:12px;color:#181412;">ул. Маншук Маметовой, 44 (ЖК Central)</span><br>
-          <span style="font-size:11px;color:#52483E;">Ежедневно 12:00 – 00:00 · +7 (778) 455-13-42</span>
-        </div>
-      `)
-      .openPopup();
+    onFrame();
+
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          entry.target.classList.add('in-view');
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal, .curtain-reveal-box, .curtain-mask').forEach(el => {
+      revealObserver.observe(el);
+    });
   }
 
   // =========================================================================
-  // 9. События интерфейса и скролл-анимация
+  // 9. Привязка интерактивных кнопок, переключателя карты и форм
   // =========================================================================
   function bindEvents() {
-    // Переключение вида меню (Фото-карточки / Печатный лист)
+    // Кнопка возврата наверх
+    if (scrollTopBtn) {
+      scrollTopBtn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+
+    // Переключатель карты 2ГИС / Яндекс.Карта
+    const mapTab2gis = document.getElementById('map-tab-2gis');
+    const mapTabYandex = document.getElementById('map-tab-yandex');
+    const mapIframe2gis = document.getElementById('map-iframe-2gis');
+    const mapIframeYandex = document.getElementById('map-iframe-yandex');
+
+    if (mapTab2gis && mapTabYandex && mapIframe2gis && mapIframeYandex) {
+      mapTab2gis.addEventListener('click', () => {
+        mapIframe2gis.classList.remove('hidden');
+        mapIframeYandex.classList.add('hidden');
+        mapTab2gis.className = 'px-3.5 py-1 rounded-full text-xs font-medium bg-[#C59B5F] text-[#14100E] transition-all';
+        mapTabYandex.className = 'px-3.5 py-1 rounded-full text-xs font-medium text-[#CFC5B7] hover:text-white transition-all';
+      });
+      mapTabYandex.addEventListener('click', () => {
+        mapIframeYandex.classList.remove('hidden');
+        mapIframe2gis.classList.add('hidden');
+        mapTabYandex.className = 'px-3.5 py-1 rounded-full text-xs font-medium bg-[#C59B5F] text-[#14100E] transition-all';
+        mapTab2gis.className = 'px-3.5 py-1 rounded-full text-xs font-medium text-[#CFC5B7] hover:text-white transition-all';
+      });
+    }
+
     if (viewGridBtn && viewListBtn) {
       viewGridBtn.addEventListener('click', () => {
         state.menuView = 'grid';
-        viewGridBtn.className = 'px-3.5 py-2 text-xs font-mono-tech uppercase tracking-wider bg-[#3A1212] text-[#F5F0E6] transition-colors';
-        viewListBtn.className = 'px-3.5 py-2 text-xs font-mono-tech uppercase tracking-wider text-[#52483E] hover:text-[#181412] transition-colors';
+        viewGridBtn.className = 'px-5 py-2 rounded-full text-xs font-medium bg-[#3A1212] text-[#F5F0E6] transition-all';
+        viewListBtn.className = 'px-5 py-2 rounded-full text-xs font-medium text-[#564C42] hover:text-[#181412] transition-all';
         renderMenu();
       });
       viewListBtn.addEventListener('click', () => {
         state.menuView = 'list';
-        viewListBtn.className = 'px-3.5 py-2 text-xs font-mono-tech uppercase tracking-wider bg-[#3A1212] text-[#F5F0E6] transition-colors';
-        viewGridBtn.className = 'px-3.5 py-2 text-xs font-mono-tech uppercase tracking-wider text-[#52483E] hover:text-[#181412] transition-colors';
+        viewListBtn.className = 'px-5 py-2 rounded-full text-xs font-medium bg-[#3A1212] text-[#F5F0E6] transition-all';
+        viewGridBtn.className = 'px-5 py-2 rounded-full text-xs font-medium text-[#564C42] hover:text-[#181412] transition-all';
         renderMenu();
       });
     }
 
-    // Поиск по меню
     if (menuSearchInput) {
       menuSearchInput.addEventListener('input', (e) => {
         state.searchQuery = e.target.value;
@@ -706,7 +930,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // Фильтры фотогалереи 2ГИС
     if (galleryFilters) {
       galleryFilters.querySelectorAll('[data-gallery-cat]').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -718,17 +941,14 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // Открытие модалки бронирования
     document.querySelectorAll('[data-open-booking]').forEach(btn => {
       btn.addEventListener('click', () => openReservationModal());
     });
 
-    const headerWishBtn = document.getElementById('header-wishlist-btn');
-    if (headerWishBtn) {
-      headerWishBtn.addEventListener('click', () => openReservationModal());
+    if (headerWishlistBtn) {
+      headerWishlistBtn.addEventListener('click', () => openReservationModal());
     }
 
-    // Быстрый выбор зала и времени в первом экране
     document.querySelectorAll('[data-quick-zone]').forEach(btn => {
       btn.addEventListener('click', () => {
         openReservationModal({ zone: btn.getAttribute('data-quick-zone') });
@@ -741,7 +961,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    // Закрытие модальных окон
     const closeDishBtn = document.getElementById('close-dish-modal');
     if (closeDishBtn) closeDishBtn.addEventListener('click', () => closeModal(dishModal));
 
@@ -767,7 +986,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Отправка форм бронирования
     const inlineForm = document.getElementById('inline-booking-form');
     if (inlineForm) {
       inlineForm.addEventListener('submit', (e) => {
@@ -784,7 +1002,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // Мобильное меню
     const mobileToggle = document.getElementById('mobile-menu-toggle');
     const mobileDrawer = document.getElementById('mobile-menu-drawer');
     const mobileClose = document.getElementById('mobile-menu-close');
@@ -803,39 +1020,17 @@ document.addEventListener('DOMContentLoaded', () => {
         if (mobileDrawer) mobileDrawer.classList.add('hidden');
       });
     });
-
-    // Скролл шапки и плавное появление секций
-    const header = document.getElementById('main-header');
-    window.addEventListener('scroll', () => {
-      if (!header) return;
-      if (window.scrollY > 30) {
-        header.classList.add('header-scrolled');
-      } else {
-        header.classList.remove('header-scrolled');
-      }
-    }, { passive: true });
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.08 });
-
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
   }
 
   // Запуск
   updateLiveStatus();
   initBookingDates();
-  renderZones();
+  renderHorizontalZonesWalk();
   renderCategories();
   renderMenu();
   renderGallery();
   renderReviews();
   updateWishlistUI();
   bindEvents();
-  initMap();
+  initChoreographyLoop();
 });
